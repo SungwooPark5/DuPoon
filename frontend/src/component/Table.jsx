@@ -1,36 +1,44 @@
 import Table from "react-bootstrap/Table";
 
-function TableComponent() {
+function TableComponent({ headers, data }) {
+  if (!headers) {
+    throw new Error("headers is required");
+  }
+
   return (
     <>
       <Table striped bordered hover>
         <thead>
-          <tr>
-            <th rowSpan="2">연도</th>
-            <th colSpan="4">투자</th>
-          </tr>
-          <tr>
-            <th>수익</th>
-            <th>입출금</th>
-            <th>기말자산</th>
-            <th>수익률</th>
-          </tr>
+          {headers.map((row, index) => (
+            <tr>
+              {row.map((header) => (
+                <th
+                  rowSpan={header.rowSpan}
+                  colSpan={header.colSpan}
+                  key={header.name}
+                >
+                  {header.name}
+                </th>
+              ))}
+            </tr>
+          ))}
         </thead>
         <tbody>
-          <tr>
-            <td>2021</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
-          <tr>
-            <td>2022</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-            <td>0</td>
-          </tr>
+          {data.map((row, index) => {
+            return (
+              <tr key={index}>
+                <td>{row.year}</td>
+                <td>{row.total.profit}</td>
+                <td>{row.total.deposit}</td>
+                <td>{row.total.final_asset}</td>
+                <td>{row.total.rate}</td>
+                <td>{row.investment.profit}</td>
+                <td>{row.investment.deposit}</td>
+                <td>{row.investment.final_asset}</td>
+                <td>{row.investment.rate}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </Table>
     </>
