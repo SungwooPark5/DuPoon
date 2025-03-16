@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class AssetType(Enum):
+class AssetTypeEnum(Enum):
 
     CASH = "Cash"
     BANK_ACCOUNT = "Bank Account"
@@ -11,7 +11,7 @@ class AssetType(Enum):
     OTHER = "Other"
 
 
-class TransactionType(Enum):
+class TransactionTypeEnum(Enum):
 
     DEPOSIT = "Deposit"
     WITHDRAWAL = "Withdrawal"
