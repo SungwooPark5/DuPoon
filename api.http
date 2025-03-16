@@ -1,0 +1,14 @@
+###
+POST http://localhost:8000/api/assets/
+Content-Type: application/json
+
+{
+    "name": "Test",
+    "description": "Test",
+    "asset_type": "OTHER",
+    "is_active": true
+}
+
+###
+DELETE http://localhost:8000/api/assets/3/
+Content-Type: application/json
