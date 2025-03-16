@@ -1,6 +1,6 @@
 from django.db import models
 
-from .enums import AssetType, TransactionType
+from .enums import AssetTypeEnum, TransactionTypeEnum
 
 
 # Create your models here.
@@ -9,7 +9,7 @@ class Asset(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
     asset_type = models.CharField(
-        max_length=20, choices=[(tag.name, tag.value) for tag in AssetType]
+        max_length=20, choices=[(tag.name, tag.value) for tag in AssetTypeEnum]
     )
     is_active = models.BooleanField(default=True)
 
@@ -50,7 +50,7 @@ class AssetTransaction(models.Model):
     month = models.IntegerField()
     amount = models.DecimalField(max_digits=20, decimal_places=2)
     type = models.CharField(
-        max_length=20, choices=[(tag.name, tag.value) for tag in TransactionType]
+        max_length=20, choices=[(tag.name, tag.value) for tag in TransactionTypeEnum]
     )
     transaction_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
