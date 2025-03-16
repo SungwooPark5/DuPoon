@@ -13,3 +13,8 @@ class AssetAdmin(admin.ModelAdmin):
 class AssetBalanceAdmin(admin.ModelAdmin):
     list_display = ("id", "asset", "year", "month", "ending_balance", "balance_date")
     list_filter = ("year", "month", "balance_date")
+    
+@admin.register(models.AssetTransaction)
+class AssetTransactionAdmin(admin.ModelAdmin):
+    list_display = ("id", "asset", "year", "month", "type", "amount", "transaction_date")
+    list_filter = ("year", "month", "type", "transaction_date")

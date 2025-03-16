@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Asset, AssetBalance
+from .models import Asset, AssetBalance, AssetTransaction
 
 
 class AssetSerializer(serializers.ModelSerializer):
@@ -11,4 +11,9 @@ class AssetSerializer(serializers.ModelSerializer):
 class AssetBalanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssetBalance
+        fields = "__all__"
+        
+class AssetTransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AssetTransaction
         fields = "__all__"
