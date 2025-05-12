@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     # My Apps
-    "asset",
+    
 ]
 
 MIDDLEWARE = [
