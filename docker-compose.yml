@@ -1,0 +1,12 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/code
+    env_file:
+      - .env
