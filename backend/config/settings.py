@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     "django_filters",
     # My Apps
     "apps.core",
-    "apps.stock",
 ]
 
 MIDDLEWARE = [
