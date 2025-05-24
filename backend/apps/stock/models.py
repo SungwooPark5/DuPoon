@@ -36,8 +36,8 @@ class Stock(models.Model):
             )
         ]
 
-        def __str__(self):
-            return f"{self.name} ({self.ticker})"
+    def __str__(self):
+        return f"{self.name} ({self.ticker})"
 
 
 class Price(models.Model):

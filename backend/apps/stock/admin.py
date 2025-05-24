@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Stock
+from .models import Stock, Price
 from django.utils.translation import gettext_lazy as _
 
 
@@ -19,10 +19,39 @@ class StockAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {"fields": ("name", "ticker", "listed_date")}),
         (
-            _("Type and Market"),
+            _("유형과 시장"),
             {
                 "fields": ("type", "market"),
-                "description": _("Select the type and market of the stock."),
+                "description": _("주식의 유형과 시장을 선택하세요."),
+            },
+        ),
+    )
+
+
+@admin.register(Price)
+class PriceAdmin(admin.ModelAdmin):
+    """
+    Admin view for Price model.
+    """
+
+    list_display = ("stock", "date", "open_price", "high_price", "low_price")
+    search_fields = ("stock__name", "stock__ticker")
+    list_filter = ("stock__type", "stock__market")
+    ordering = ("-date",)
+    list_per_page = 20
+    fieldsets = (
+        (None, {"fields": ("stock", "date")}),
+        (
+            _("가격 정보 입력"),
+            {
+                "fields": (
+                    "open_price",
+                    "high_price",
+                    "low_price",
+                    "close_price",
+                    "volume",
+                ),
+                "description": _("가격 정보를 입력하세요."),
             },
         ),
     )
