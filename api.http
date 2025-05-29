@@ -12,3 +12,10 @@ Content-Type: application/json
 ###
 DELETE http://localhost:8000/api/assets/3/
 Content-Type: application/json
+
+###
+POST http://localhost:8000/api/stock/price/fetch/
+Content-Type: application/json
+
+{
+}
