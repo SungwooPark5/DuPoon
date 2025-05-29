@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>All Prices</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Stock Ticker</th>
+        <th>date</th>
+        <th>Open</th>
+        <th>High</th>
+        <th>Low</th>
+        <th>Close</th>
+        <th>Adj Close</th>
+        <th>Volume</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for price in prices %}
+        <tr>
+          <td>{{ price.stock.ticker }}</td>
+          <td>{{ price.date }}</td>
+          <td>{{ price.open_price }}</td>
+          <td>{{ price.high_price }}</td>
+          <td>{{ price.low_price }}</td>
+          <td>{{ price.close_price }}</td>
+          <td>{{ price.adj_close_price }}</td>
+          <td>{{ price.volume }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}

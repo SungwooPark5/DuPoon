@@ -49,6 +49,7 @@ class PriceAdmin(admin.ModelAdmin):
                     "high_price",
                     "low_price",
                     "close_price",
+                    "adj_close_price",
                     "volume",
                 ),
                 "description": _("가격 정보를 입력하세요."),
