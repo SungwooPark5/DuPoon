@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
 from .models import Stock, Price
 
 
@@ -22,3 +26,12 @@ class PriceListView(ListView):
 
     def get_queryset(self):
         return Price.objects.all().order_by("date")
+
+
+# API views
+class PriceFetchAPIView(APIView):
+    def post(self, request):
+
+        return Response(
+            {"message": "started fetching prices"}, status=status.HTTP_200_OK
+        )
