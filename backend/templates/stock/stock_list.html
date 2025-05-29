@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>All Stocks</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Stock Ticker</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Market</th>
+        <th>Listed Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for stock in stocks %}
+        <tr>
+          <td>{{ stock.ticker }}</td>
+          <td>{{ stock.name }}</td>
+          <td>{{ stock.type }}</td>
+          <td>{{ stock.market }}</td>
+          <td>{{ stock.listed_date }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}
