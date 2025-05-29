@@ -59,6 +59,9 @@ class Price(models.Model):
         verbose_name=_("저가"), max_digits=10, decimal_places=2
     )
     close_price = models.DecimalField(
+        verbose_name=_("종가"), max_digits=10, decimal_places=2
+    )
+    adj_close_price = models.DecimalField(
         verbose_name=_("수정 종가"), max_digits=10, decimal_places=2
     )
     volume = models.BigIntegerField(verbose_name=_("거래량"))

@@ -29,4 +29,7 @@ class PriceFactory(factory.django.DjangoModelFactory):
     close_price = factory.Faker(
         "pydecimal", left_digits=5, right_digits=2, positive=True
     )
+    adj_close_price = factory.Faker(
+        "pydecimal", left_digits=5, right_digits=2, positive=True
+    )
     volume = factory.Faker("random_int", min=100, max=10000)
