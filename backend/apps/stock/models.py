@@ -4,10 +4,24 @@ from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
+class StockManager(models.Manager):
+    """
+    Custom manager for Stock model to handle specific queries.
+    """
+
+    def get_distinct_tickers(self):
+        """
+        Get distinct stock tickers.
+        """
+        return self.values_list("ticker", flat=True).distinct()
+
+
 class Stock(models.Model):
     """
     Model representing a stock.
     """
+
+    objects = StockManager()
 
     name = models.CharField(verbose_name=_("이름"), max_length=100)
     ticker = models.CharField(verbose_name=_("티커"), max_length=10, unique=True)
