@@ -31,7 +31,9 @@ class PriceListView(ListView):
 # API views
 class PriceFetchAPIView(APIView):
     def post(self, request):
-
+        """
+        Start fetching prices for all stocks.
+        """
         return Response(
             {"message": "started fetching prices"}, status=status.HTTP_200_OK
         )
