@@ -1,6 +1,10 @@
 {% extends "base.html" %}
+
+{% load static %}
+
 {% block content %}
   <h1>All Prices</h1>
+  <button id="fetchPriceBtn">주가 가져오기</button>
   <table>
     <thead>
       <tr>
@@ -30,3 +34,6 @@
     </tbody>
   </table>
 {% endblock content %}
+{% block script %}
+  <script src="{% static 'js/stock/price_list.js' %}"></script>
+{% endblock script %}
