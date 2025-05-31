@@ -1,24 +1,41 @@
 import yfinance as yf
+import pandas as pd
 
 from apps.stock.models import Stock, Price
 from datetime import datetime, timedelta
 
 
-def fetch_prices_for_all_stocks(ticker, start_date, end_date):
+def fetch_prices_for_all_stocks():
     """
-    Fetch historical stock data for a given ticker symbol between specified dates.
-
-    :param ticker: Stock ticker symbol (e.g., 'AAPL' for Apple Inc.)
-    :param start_date: Start date in 'YYYY-MM-DD' format
-    :param end_date: End date in 'YYYY-MM-DD' format
-    :return: DataFrame containing stock data
+    Fetch historical stock data for all distinct stock tickers.
     """
-    stock_data = yf.download(ticker, start=start_date, end=end_date, auto_adjust=False)
-    return stock_data
+    tickers = list(Stock.objects.get_distinct_tickers())
+    prices = yf.download(tickers, auto_adjust=False)
+
+    print(prices)
+
+    print(Price.objects.get_latest_price_date(Stock.objects.get(ticker="SPY")))
+
+    # return save_prices_to_db(prices, tickers)
 
 
-# Example usage:
-if __name__ == "__main__":
-    # Fetch historical prices for SPY (S&P 500 ETF) from January 1, 2023 to October 1, 2023
-    fetch_stock_data = fetch_prices_for_all_stocks("SPY", "2023-01-01", "2023-10-01")
-    print(fetch_stock_data.head())  # Display the first few rows of the fetched data
+def save_prices_to_db(prices: pd.DataFrame, tickers: list[str]) -> None:
+    """
+    Save the fetched stock data to the database.
+    """
+    if isinstance(prices.columns, pd.MultiIndex):
+
+        for ticker in tickers:
+            ticker_prices = prices.xs(ticker, level=1, axis=1)
+            prices = []
+            for date, row in ticker_prices.iterrows():
+                price = Price(
+                    stock=Stock.objects.get(ticker=ticker),
+                    date=date,
+                    open_price=row["Open"],
+                    high_price=row["High"],
+                    low_price=row["Low"],
+                    close_price=row["Close"],
+                    volume=row["Volume"],
+                )
+                prices.append(price)
