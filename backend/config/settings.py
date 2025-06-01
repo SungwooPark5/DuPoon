@@ -163,3 +163,6 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+# Data upload limit
+DATA_UPLOAD_MAX_NUMBER_FIELDS = env.int("DATA_UPLOAD_MAX_NUMBER_FIELDS", default=10000)
