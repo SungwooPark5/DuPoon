@@ -6,7 +6,7 @@ services:
     ports:
       - "8000:8000"
     command: "python manage.py runserver 0.0.0.0:8000"
-    # 개발 환경에서는 websockt이 필요한 경우를 제외하고는 runserver를 사용
+    # 개발 환경에서는 websocket이 필요한 경우를 제외하고는 runserver를 사용
     # command: >
     #   sh -c "python manage.py collectstatic --noinput &&
     #   uvicorn config.asgi:application --host 0.0.0.0 --port 8000 --reload"

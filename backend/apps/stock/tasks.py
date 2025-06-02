@@ -1,4 +1,6 @@
 from celery import shared_task
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 from . import utils
 
@@ -13,7 +15,7 @@ def test_celery():
 
 
 @shared_task
-def fetch_and_save_prices():
+def fetch_and_save_prices(user_id: str):
     """
     Celery task to fetch stock prices and save them to the database.
     """
@@ -21,11 +23,15 @@ def fetch_and_save_prices():
         prices, tickers = utils.fetch_prices_for_all_stocks()
         utils.save_prices_to_db(prices, tickers)
 
-        print(
-            f"Successfully fetched and saved {len(prices)} prices for {len(tickers)} stocks."
+        # notify that the task was successful
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            f"price_updates_{user_id}",
+            {
+                "type": "send_price_update",
+                "message": "Prices fetched and saved successfully.",
+            },
         )
-        return f"Successfully fetched and saved {len(prices)} prices for {len(tickers)} stocks."
-
     except Exception as e:
         print(f"Error fetching and saving prices: {e}")
         return f"Error fetching and saving prices: {e}"
