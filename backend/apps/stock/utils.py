@@ -5,7 +5,7 @@ from apps.stock.models import Stock, Price
 from datetime import datetime, timedelta
 
 
-def fetch_prices_for_all_stocks():
+def fetch_prices_for_all_stocks() -> tuple[pd.DataFrame, list[str]]:
     """
     Fetch historical stock data for all distinct stock tickers.
     """
@@ -16,10 +16,10 @@ def fetch_prices_for_all_stocks():
 
     # print(Price.objects.get_latest_price_date(Stock.objects.get(ticker="SPY")))
 
-    return save_prices_to_db(prices, tickers)
+    return prices, tickers
 
 
-def save_prices_to_db(prices: pd.DataFrame, tickers: list[str]) -> list[int]:
+def save_prices_to_db(prices: pd.DataFrame, tickers: list[str]) -> tuple[int, int]:
     """
     Save the fetched stock data to the database.
     """

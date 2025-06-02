@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from apps.stock.utils import fetch_prices_for_all_stocks
+from apps.stock.utils import fetch_prices_for_all_stocks, save_prices_to_db
 
 
 class Command(BaseCommand):
@@ -10,10 +10,11 @@ class Command(BaseCommand):
         Fetch historical stock prices for all stocks and save them to the database.
         """
         try:
-            price_num, stock_num = fetch_prices_for_all_stocks()
+            prices, tickers = fetch_prices_for_all_stocks()
+            save_prices_to_db(prices, tickers)
             self.stdout.write(
                 self.style.SUCCESS(
-                    f"Successfully fetched stock prices.\nSaved {price_num} prices for {stock_num} stocks."
+                    f"Successfully fetched stock prices.\nSaved {len(prices)} prices for {len(tickers)} stocks."
                 )
             )
         except Exception as e:
