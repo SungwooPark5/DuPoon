@@ -4,6 +4,8 @@ from django.views.generic import ListView, DetailView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Stock, Price
 from . import tasks
@@ -31,13 +33,20 @@ class PriceListView(ListView):
 
 # API views
 class PriceFetchAPIView(APIView):
+    """
+    API view to start fetching prices for all stocks.
+    """
+
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         """
         Start fetching prices for all stocks.
         """
 
         try:
-            tasks.fetch_and_save_prices.delay()
+            user_id = request.user.id
+            tasks.fetch_and_save_prices.delay(str(user_id))
             return Response(
                 {"message": "started fetching prices"}, status=status.HTTP_200_OK
             )
