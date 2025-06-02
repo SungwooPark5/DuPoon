@@ -19,6 +19,17 @@
     </footer>
   </body>
   <script src="{% static 'js/common.js' %}"></script>
+  {% if request.user.is_authenticated %}
+    <script>
+      const userId = '{{ request.user.id }}';
+      const socket = new WebSocket(`ws://${window.location.host}/ws/price-update/${userId}/`);
+
+      socket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        alert(data.message);
+      };
+    </script>
+  {% endif %}
   {% block script %}{% endblock script %}
 
 </html>
