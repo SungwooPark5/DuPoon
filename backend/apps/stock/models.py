@@ -4,10 +4,24 @@ from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
+class StockManager(models.Manager):
+    """
+    Custom manager for Stock model to handle specific queries.
+    """
+
+    def get_distinct_tickers(self) -> models.QuerySet:
+        """
+        Get distinct stock tickers.
+        """
+        return self.values_list("ticker", flat=True).distinct()
+
+
 class Stock(models.Model):
     """
     Model representing a stock.
     """
+
+    objects = StockManager()
 
     name = models.CharField(verbose_name=_("이름"), max_length=100)
     ticker = models.CharField(verbose_name=_("티커"), max_length=10, unique=True)
@@ -40,10 +54,31 @@ class Stock(models.Model):
         return f"{self.name} ({self.ticker})"
 
 
+class PriceManager(models.Manager):
+    """
+    Custom manager for Price model to handle specific queries.
+    """
+
+    def get_latest_prices(self, stock: Stock) -> models.QuerySet:
+        """
+        Get the latest prices for a given stock.
+        """
+        return self.filter(stock=stock).order_by("-date")
+
+    def get_latest_price_date(self, stock: Stock) -> models.DateField:
+        """
+        Get the latest price date for a given stock.
+        """
+        latest_price = self.get_latest_prices(stock).first()
+        return latest_price.date if latest_price else None
+
+
 class Price(models.Model):
     """
     Model representing the price of a stock.
     """
+
+    objects = PriceManager()
 
     stock = models.ForeignKey(
         Stock, verbose_name=_("주식"), on_delete=models.CASCADE, related_name="prices"

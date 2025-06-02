@@ -34,7 +34,16 @@ class PriceAdmin(admin.ModelAdmin):
     Admin view for Price model.
     """
 
-    list_display = ("stock", "date", "open_price", "high_price", "low_price")
+    list_display = (
+        "stock",
+        "date",
+        "open_price",
+        "high_price",
+        "low_price",
+        "close_price",
+        "adj_close_price",
+        "volume",
+    )
     search_fields = ("stock__name", "stock__ticker")
     list_filter = ("stock__type", "stock__market")
     ordering = ("-date",)
