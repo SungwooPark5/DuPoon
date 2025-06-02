@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .models import Stock, Price
+from . import tasks
 
 
 # Create your views here.
@@ -34,6 +35,14 @@ class PriceFetchAPIView(APIView):
         """
         Start fetching prices for all stocks.
         """
-        return Response(
-            {"message": "started fetching prices"}, status=status.HTTP_200_OK
-        )
+
+        try:
+            tasks.fetch_and_save_prices.delay()
+            return Response(
+                {"message": "started fetching prices"}, status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            return Response(
+                {"message": f"Error starting price fetch: {e}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
