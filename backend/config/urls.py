@@ -23,7 +23,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path("", include("apps.core.urls")),
-    path("stock/", include("apps.stock.urls")),
+    path("stock/", include("apps.stock.urls", namespace="stock")),
     path("api/stock/", include("apps.stock.api_urls")),
 ]
 
