@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     # My Apps
     "apps.core",
     "apps.stock",
+    "apps.backtest",
 ]
 
 MIDDLEWARE = [
