@@ -99,8 +99,10 @@ class PriceManager(models.Manager):
         df_pivot = df.pivot(
             index="date", columns="stock__ticker", values="adj_close_price"
         )
+        df_pivot.index = pd.to_datetime(df_pivot.index)
+        df_pivot = df_pivot.apply(pd.to_numeric, errors="coerce").sort_index()
 
-        return df_pivot.sort_index(ascending=True)
+        return df_pivot
 
 
 class Price(models.Model):
