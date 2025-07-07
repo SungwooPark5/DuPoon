@@ -19,3 +19,20 @@ Content-Type: application/json
 
 {
 }
+
+###
+POST http://localhost:8000/api/backtest/static-allocation/
+Content-Type: application/json
+
+{
+    "allocations": [
+        {
+            "ticker": "SPY",
+            "weight": 0.6
+        },
+        {
+            "ticker": "TLT",
+            "weight": 0.4
+        }
+    ]
+}

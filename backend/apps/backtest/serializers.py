@@ -38,10 +38,34 @@ class BacktestSerializer(serializers.Serializer):
             )
         return data
 
+    class Meta:
+        swagger_schema_fields = {
+            "example": {
+                "allocations": [
+                    {"ticker": "SPY", "weight": 0.6},
+                    {"ticker": "TLT", "weight": 0.4},
+                ]
+            }
+        }
+
+
+class PriceDataSerializer(serializers.Serializer):
+    """
+    Serializer for price data.
+    """
+
+    date = serializers.DateField()
+    price = serializers.FloatField()
+
 
 class BacktestResultSerializer(serializers.Serializer):
     """
     Serializer for backtest result data.
     """
+
+    name = serializers.CharField()
+    stats = serializers.DictField()
+    lookback_returns = serializers.DictField()
+    price = serializers.ListField(child=PriceDataSerializer())
 
     pass
