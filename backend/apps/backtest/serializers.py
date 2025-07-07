@@ -37,3 +37,11 @@ class BacktestSerializer(serializers.Serializer):
                 "Total weight of allocations must equal 1.0"
             )
         return data
+
+
+class BacktestResultSerializer(serializers.Serializer):
+    """
+    Serializer for backtest result data.
+    """
+
+    pass
