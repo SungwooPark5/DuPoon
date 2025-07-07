@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # Third-party Apps
     "channels",
     "debug_toolbar",
+    "drf_yasg",
     # My Apps
     "apps.core",
     "apps.stock",

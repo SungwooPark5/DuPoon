@@ -84,6 +84,9 @@ class PriceManager(models.Manager):
         queryset = Price.objects.all()
 
         if tickers:
+            if isinstance(tickers, str):
+                tickers = [tickers]
+
             queryset = queryset.filter(stock__ticker__in=tickers)
 
         if start_date:
@@ -91,6 +94,9 @@ class PriceManager(models.Manager):
 
         if end_date:
             queryset = queryset.filter(date__lte=end_date)
+
+        if not queryset.exists():
+            return pd.DataFrame()
 
         # Convert the QuerySet to a DataFrame
         df = pd.DataFrame.from_records(
