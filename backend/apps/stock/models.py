@@ -1,3 +1,5 @@
+import pandas as pd
+
 from django.db import models
 
 from django.utils.translation import gettext_lazy as _
@@ -71,6 +73,36 @@ class PriceManager(models.Manager):
         """
         latest_price = self.get_latest_prices(stock).first()
         return latest_price.date if latest_price else None
+
+    @staticmethod
+    def get_adj_close_dataframe(
+        tickers=None, start_date=None, end_date=None
+    ) -> pd.DataFrame:
+        """
+        Get a DataFrame of adjusted close prices filtered by tickers and date range.
+        """
+        queryset = Price.objects.all()
+
+        if tickers:
+            queryset = queryset.filter(stock__ticker__in=tickers)
+
+        if start_date:
+            queryset = queryset.filter(date__gte=start_date)
+
+        if end_date:
+            queryset = queryset.filter(date__lte=end_date)
+
+        # Convert the QuerySet to a DataFrame
+        df = pd.DataFrame.from_records(
+            queryset.values("stock__ticker", "date", "adj_close_price")
+        )
+        df_pivot = df.pivot(
+            index="date", columns="stock__ticker", values="adj_close_price"
+        )
+        df_pivot.index = pd.to_datetime(df_pivot.index)
+        df_pivot = df_pivot.apply(pd.to_numeric, errors="coerce").sort_index()
+
+        return df_pivot
 
 
 class Price(models.Model):
