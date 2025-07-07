@@ -6,8 +6,8 @@ class StockFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Stock
 
-    name = "Test Stock"
-    ticker = "TST"
+    name = factory.Faker("company")
+    ticker = factory.Faker("lexify", text="???")
     type = factory.Iterator(["stock", "etf"])
     market = factory.Iterator(["kospi", "nasdaq", "nyse"])
     listed_date = factory.Faker("date_this_decade")
