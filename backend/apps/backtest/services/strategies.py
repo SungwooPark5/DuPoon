@@ -3,6 +3,7 @@ import pandas as pd
 
 from apps.stock.models import Price
 from .dtos import BacktestConfig
+from ..utils import create_slippage_fn
 
 
 def get_static_allocation_strategy(
@@ -44,4 +45,6 @@ def get_static_allocation_strategy(
         ],
     )
 
-    return bt.Backtest(strategy, prices)
+    return bt.Backtest(
+        strategy, prices, commissions=create_slippage_fn(config.slippage)
+    )
