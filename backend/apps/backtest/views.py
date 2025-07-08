@@ -43,9 +43,13 @@ class BacktestView(APIView):
             serializer = BacktestSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             allocations = serializer.validated_data["allocations"]
+            start_date = serializer.validated_data.get("start_date")
+            end_date = serializer.validated_data.get("end_date")
 
             # 전략 실행
-            backtest = get_static_allocation_strategy(allocations)
+            backtest = get_static_allocation_strategy(
+                allocations, start_date=start_date, end_date=end_date
+            )
             result = bt.run(backtest)
             res = result[0]
 
