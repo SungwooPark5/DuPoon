@@ -47,6 +47,8 @@ class BacktestSerializer(serializers.Serializer):
                 ],
                 "start_date": "2000-01-01",
                 "end_date": "2021-01-01",
+                "rebalance_freq": "monthly",
+                "slippage": 0.0,
             }
         }
 

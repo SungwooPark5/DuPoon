@@ -6,10 +6,15 @@ from apps.stock.models import Price
 
 def get_static_allocation_strategy(
     allocations: list[dict],
-    period: str = "monthly",
+    strategy_name: str = "Custom Allocation",
+    rebalance_freq: str = "monthly",  # "daily", "weekly", "monthly", "quarterly", "yearly"
     start_date: str = None,
     end_date: str = None,
+    slippage: float = 0.0,
 ) -> bt.Backtest:
+    """
+    Create a backtest for a static asset allocation strategy.
+    """
 
     # 임의의 고정된 자산
     weights = {a["ticker"].ticker: a["weight"] for a in allocations}
@@ -21,11 +26,22 @@ def get_static_allocation_strategy(
     )
     prices.dropna(inplace=True)  # 결측치 제거
 
+    # 리밸런싱 주기 설정
+    run_alog = {
+        "daily": bt.algos.RunDaily(),
+        "weekly": bt.algos.RunWeekly(),
+        "monthly": bt.algos.RunMonthly(),
+        "quarterly": bt.algos.RunQuarterly(),
+        "yearly": bt.algos.RunYearly(),
+    }.get(rebalance_freq.lower())
+    if run_alog is None:
+        raise ValueError(f"Invalid rebalance frequency: {rebalance_freq}")
+
     # 전략 정의
     strategy = bt.Strategy(
-        "60/40 Allocation",
+        strategy_name,
         [
-            bt.algos.RunMonthly(),
+            run_alog,
             bt.algos.SelectAll(),
             bt.algos.WeighSpecified(**weights),
             bt.algos.Rebalance(),

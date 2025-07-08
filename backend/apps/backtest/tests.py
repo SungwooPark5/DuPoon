@@ -19,7 +19,7 @@ class TestBacktest:
         ]
 
     def test_6040_allocation_strategy(self):
-        from apps.backtest.strategies import get_static_allocation_strategy
+        from apps.backtest.services.strategies import get_static_allocation_strategy
 
         # Create sample allocations
         allocations = [
