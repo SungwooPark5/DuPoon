@@ -29,10 +29,60 @@ class BacktestSerializer(serializers.Serializer):
     """
 
     allocations = AssetAllocationSerializer(many=True, required=True)
+    start_date = serializers.DateField(
+        required=False,
+        allow_null=True,
+        help_text="Start date for the backtest (YYYY-MM-DD)",
+    )
+    end_date = serializers.DateField(
+        required=False,
+        allow_null=True,
+        help_text="End date for the backtest (YYYY-MM-DD)",
+    )
+    rebalance_freq = serializers.ChoiceField(
+        required=True,
+        allow_null=False,
+        choices=[
+            ("daily", "Daily"),
+            ("weekly", "Weekly"),
+            ("monthly", "Monthly"),
+            ("quarterly", "Quarterly"),
+            ("yearly", "Yearly"),
+        ],
+        help_text="Rebalance frequency for the portfolio",
+    )
+    slippage = serializers.FloatField(
+        required=False,
+        allow_null=True,
+        default=0.0,
+        min_value=0.0,
+        help_text="Slippage percentage for the backtest (default is 0.0)",
+    )
+    include_cash = serializers.BooleanField(
+        required=False,
+        default=False,
+        help_text="Include cash in the portfolio (default is False)",
+    )
+    cash_ticker = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        default="CASH",
+        help_text="Ticker symbol for cash asset (default is 'CASH')",
+    )
+    cash_weight = serializers.FloatField(
+        required=False,
+        allow_null=True,
+        default=0.0,
+        min_value=0.0,
+        max_value=1.0,
+        help_text="Weight of cash in the portfolio (default is 0.0)",
+    )
 
     def validate(self, data):
         total_weight = sum(allocation["weight"] for allocation in data["allocations"])
-        if total_weight != 1.0:
+        if data.get("include_cash", False):
+            total_weight += data.get("cash_weight", 0.0)
+        if total_weight < 0.99999999 or total_weight > 1.00000001:
             raise serializers.ValidationError(
                 "Total weight of allocations must equal 1.0"
             )
@@ -44,7 +94,14 @@ class BacktestSerializer(serializers.Serializer):
                 "allocations": [
                     {"ticker": "SPY", "weight": 0.6},
                     {"ticker": "TLT", "weight": 0.4},
-                ]
+                ],
+                "start_date": "2000-01-01",
+                "end_date": "2021-01-01",
+                "rebalance_freq": "monthly",
+                "slippage": 0.0,
+                "include_cash": False,
+                "cash_ticker": "CASH",
+                "cash_weight": 0.0,
             }
         }
 
