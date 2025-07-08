@@ -50,10 +50,12 @@ class BacktestView(APIView):
                 end_date=serializer.validated_data.get("end_date"),
                 rebalance_freq=serializer.validated_data.get("rebalance_freq"),
                 slippage=serializer.validated_data.get("slippage", 0.0),
+                include_cash=serializer.validated_data.get("include_cash", False),
+                cash_ticker=serializer.validated_data.get("cash_ticker", "CASH"),
+                cash_weight=serializer.validated_data.get("cash_weight", 0.0),
             )
 
             # 전략 실행
-            print(config.rebalance_freq)
             backtest = get_static_allocation_strategy(config)
             result = bt.run(backtest)
             res = result[0]

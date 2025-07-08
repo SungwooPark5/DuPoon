@@ -20,15 +20,20 @@ class TestBacktest:
 
     def test_6040_allocation_strategy(self):
         from apps.backtest.services.strategies import get_static_allocation_strategy
+        from apps.backtest.services.dtos import BacktestConfig
 
         # Create sample allocations
         allocations = [
             {"ticker": self.stock1, "weight": 0.6},
             {"ticker": self.stock2, "weight": 0.4},
         ]
+        # Create a BacktestConfig object
+        config = BacktestConfig(
+            allocations=allocations,
+        )
 
         # Run the strategy
-        backtest = get_static_allocation_strategy(allocations)
+        backtest = get_static_allocation_strategy(config)
         results = backtest.run()
 
         # Check if the backtest object is created
