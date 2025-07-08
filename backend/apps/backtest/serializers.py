@@ -29,6 +29,35 @@ class BacktestSerializer(serializers.Serializer):
     """
 
     allocations = AssetAllocationSerializer(many=True, required=True)
+    start_date = serializers.DateField(
+        required=False,
+        allow_null=True,
+        help_text="Start date for the backtest (YYYY-MM-DD)",
+    )
+    end_date = serializers.DateField(
+        required=False,
+        allow_null=True,
+        help_text="End date for the backtest (YYYY-MM-DD)",
+    )
+    rebalance_freq = serializers.ChoiceField(
+        required=True,
+        allow_null=False,
+        choices=[
+            ("daily", "Daily"),
+            ("weekly", "Weekly"),
+            ("monthly", "Monthly"),
+            ("quarterly", "Quarterly"),
+            ("yearly", "Yearly"),
+        ],
+        help_text="Rebalance frequency for the portfolio",
+    )
+    slippage = serializers.FloatField(
+        required=False,
+        allow_null=True,
+        default=0.0,
+        min_value=0.0,
+        help_text="Slippage percentage for the backtest (default is 0.0)",
+    )
 
     def validate(self, data):
         total_weight = sum(allocation["weight"] for allocation in data["allocations"])

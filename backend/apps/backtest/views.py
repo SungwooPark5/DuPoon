@@ -13,6 +13,7 @@ from drf_yasg.utils import swagger_auto_schema
 from common.utils import serialize_backtest_stats
 
 from .services.strategies import get_static_allocation_strategy
+from .services.dtos import BacktestConfig
 from .serializers import BacktestSerializer, BacktestResultSerializer
 
 
@@ -43,20 +44,17 @@ class BacktestView(APIView):
             serializer = BacktestSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
 
-            allocations = serializer.validated_data["allocations"]
-            start_date = serializer.validated_data.get("start_date")
-            end_date = serializer.validated_data.get("end_date")
-            rebalance_freq = serializer.validated_data.get("rebalance_freq", "monthly")
-            slippage = serializer.validated_data.get("slippage", 0.0)
+            config = BacktestConfig(
+                allocations=serializer.validated_data["allocations"],
+                start_date=serializer.validated_data.get("start_date"),
+                end_date=serializer.validated_data.get("end_date"),
+                rebalance_freq=serializer.validated_data.get("rebalance_freq"),
+                slippage=serializer.validated_data.get("slippage", 0.0),
+            )
 
             # 전략 실행
-            backtest = get_static_allocation_strategy(
-                allocations,
-                start_date=start_date,
-                end_date=end_date,
-                rebalance_freq=rebalance_freq,
-                slippage=slippage,
-            )
+            print(config.rebalance_freq)
+            backtest = get_static_allocation_strategy(config)
             result = bt.run(backtest)
             res = result[0]
 
