@@ -3,7 +3,7 @@ import pandas as pd
 
 from apps.stock.models import Price
 from .dtos import BacktestConfig
-from ..utils import create_slippage_fn
+from ..utils import create_slippage_fn, generate_cash_series
 
 
 def get_static_allocation_strategy(
@@ -21,6 +21,13 @@ def get_static_allocation_strategy(
     prices = Price.objects.get_adj_close_dataframe(
         tickers=tickers, start_date=config.start_date, end_date=config.end_date
     )
+
+    # 현금 자산 추가
+    if config.include_cash and config.cash_weight > 0:
+        tickers.append(config.cash_ticker)
+        weights[config.cash_ticker] = config.cash_weight
+        prices[config.cash_ticker] = generate_cash_series(prices.index)
+
     prices.dropna(inplace=True)  # 결측치 제거
 
     # 리밸런싱 주기 설정
