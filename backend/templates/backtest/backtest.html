@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}두푼 - 백테스트{% endblock title %}
+{% block content %}
+  <div class="container">
+    <h1 class="h2">백테스트 설정</h1>
+    <p>지정한 전략으로 백테스트 실행</p>
+    <div class="container border p-3 mb-3">
+      <form id="backtest-form">
+        <div class="mb-3">
+          <label for="strategy" class="form-label">전략 선택</label>
+          <select class="form-select" id="strategy" name="strategy">
+            <option value="static_allocation">정적 자산 배분</option>
+            <!-- Add more strategies as needed -->
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="start_date" class="form-label">시작 날짜</label>
+          <input type="date" class="form-control" id="start_date" name="start_date" required="required">
+        </div>
+        <div class="mb-3">
+          <label for="end_date" class="form-label">종료 날짜</label>
+          <input type="date" class="form-control" id="end_date" name="end_date" required="required">
+        </div>
+        <button type="submit" class="btn btn-primary">백테스트 실행</button>
+      </form>
+    </div>
+  </div>
+{% endblock content %}
