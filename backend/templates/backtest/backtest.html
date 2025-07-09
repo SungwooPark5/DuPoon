@@ -34,11 +34,11 @@
 
         <div class="mb-3">
           <label for="start_date" class="form-label">시작 날짜</label>
-          <input type="date" class="form-control" id="start_date" name="start_date" required="required">
+          <input type="date" class="form-control" id="start_date" name="start_date" required="required" value="2000-01-01">
         </div>
         <div class="mb-3">
           <label for="end_date" class="form-label">종료 날짜</label>
-          <input type="date" class="form-control" id="end_date" name="end_date" required="required">
+          <input type="date" class="form-control" id="end_date" name="end_date" required="required" value="2024-12-31">
         </div>
 
         <div class="mb-3">
@@ -71,8 +71,8 @@
             <input type="text" class="form-control" id="cash_ticker" name="cash_ticker" placeholder="예: KODEX 단기채권 ETF">
           </div>
           <div class="mb-3">
-            <label for="cash_allocation" class="form-label">현금 비율 (%)</label>
-            <input type="number" class="form-control" id="cash_allocation" name="cash_allocation" step="0.01" min="0" value="0">
+            <label for="cash_weight" class="form-label">현금 비율 (%)</label>
+            <input type="number" class="form-control" id="cash_weight" name="cash_weight" step="0.01" min="0" value="0">
           </div>
         </div>
 
@@ -89,5 +89,5 @@
   </div>
 {% endblock content %}
 {% block script %}
-  <script src="{% static 'js/backtest/backtest_page.js' %}"></script>
+  <script type="module" src="{% static 'js/backtest/backtest_page.js' %}"></script>
 {% endblock script %}
