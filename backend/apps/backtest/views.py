@@ -1,6 +1,7 @@
 import bt
 
 from django.shortcuts import render
+from django.views.generic import TemplateView
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -18,7 +19,15 @@ from .serializers import BacktestSerializer, BacktestResultSerializer
 
 
 # Create your views here.
-class BacktestView(APIView):
+class BacktestView(TemplateView):
+    """
+    View to render the backtest page.
+    """
+
+    template_name = "backtest/backtest.html"
+
+
+class BacktestAPIView(APIView):
     """
     API view to perform a backtest using a static allocation strategy.
     """
