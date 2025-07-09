@@ -30,3 +30,13 @@ document
       allocationDiv.remove();
     }
   });
+
+document.getElementById("include_cash").addEventListener("change", function () {
+  const value = this.value;
+  const cashOptions = document.getElementById("cash-options");
+  if (value === "true") {
+    cashOptions.classList.remove("collapse");
+  } else {
+    cashOptions.classList.add("collapse");
+  }
+});
