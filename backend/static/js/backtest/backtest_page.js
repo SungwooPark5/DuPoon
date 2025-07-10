@@ -61,6 +61,7 @@ document
       cash_weight: parseFloat(formData.get("cash_weight") || 0),
     };
 
+    // Calculate allocations
     const allocationKeys = [...formData.keys()].filter((k) =>
       k.startsWith("allocations[")
     );
@@ -75,6 +76,13 @@ document
       }
     }
 
+    // Loading spinner and results box
+    const spinner = document.getElementById("loading");
+    const resultsBox = document.getElementById("results-box");
+    spinner.classList.remove("collapse");
+    resultsBox.textContent = "백테스트 결과를 불러오는 중입니다...";
+
+    // Reset backtest results
     try {
       const res = await fetch("/api/backtest/static-allocation/", {
         method: "POST",
@@ -87,7 +95,12 @@ document
 
       const result = await res.json();
       console.log(result);
+      resultsBox.textContent = JSON.stringify(result, null, 2);
     } catch (error) {
-      console.error("Error:", error);
+      resultsBox.textContent =
+        "백테스트 결과를 불러오는 중 오류가 발생했습니다.";
+      console.error("백테스트 요청 중 오류 발생:", error);
+    } finally {
+      spinner.classList.add("collapse");
     }
   });
