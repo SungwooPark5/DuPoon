@@ -84,7 +84,14 @@
     <h2 class="h4">백테스트 결과</h2>
     <div id="backtest-results" class="border p-3">
       <!-- Results will be displayed here -->
-      <p>백테스트 결과가 여기에 표시됩니다.</p>
+      <div id="loading" class="text-center collapse">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">로딩 중...</span>
+        </div>
+      </div>
+      <pre id="results-box">
+        백테스트 결과가 여기에 표시됩니다.
+      </pre>
     </div>
   </div>
 {% endblock content %}
