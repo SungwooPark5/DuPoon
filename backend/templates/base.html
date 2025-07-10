@@ -9,7 +9,9 @@
     <meta name="keywords" content="Quant, Trading, Platform">
     <meta name="author" content="SWPark">
     <meta name="csrf-token" content="{{ csrf_token }}">
-    <title>두푼 - 간단한 자산 배분 전략 프로그램</title>
+    <title>
+      {% block title %}두푼 - 간단한 자산 배분 전략 프로그램{% endblock title %}
+    </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
   </head>
 
@@ -31,6 +33,9 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'stock:price_list' %}">주가</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'backtest:backtest' %}">백테스트</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -43,6 +48,10 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
     <script src="{% static 'js/common.js' %}"></script>
+    {% comment "websocket" %}
+    if user is authenticated, connect to WebSocket for notifications
+    (price updates, alerts, etc.)
+    {% endcomment %}
     {% if request.user.is_authenticated %}
       <script>
         const userId = '{{ request.user.id }}';

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}두푼 - 백테스트{% endblock title %}
+{% block content %}
+  <div class="container">
+    <h1 class="h2">백테스트 설정</h1>
+    <p>지정한 전략으로 백테스트 실행</p>
+    <div class="container border p-3 mb-3">
+      <form id="backtest-form">
+        <div class="mb-3">
+          <label for="strategy" class="form-label">전략 선택</label>
+          <select class="form-select" id="strategy" name="strategy">
+            <option value="static_allocation">정적 자산 배분</option>
+            <!-- Add more strategies as needed -->
+          </select>
+        </div>
+        <fieldset class="mb-3">
+          <legend class="col-form-label">자산 선택</legend>
+          <div id="allocations">
+            <div class="allocation row mb-2">
+              <div class="col-md-5">
+                <input name="allocations[0][ticker]" placeholder="티커" class="form-control mb-1" required="required">
+              </div>
+              <div class="col-md-5">
+                <input name="allocations[0][weight]" placeholder="비율 (%)" class="form-control mb-1" required="required">
+              </div>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-outline-danger remove-allocation">삭제</button>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary" id="add-allocation">자산 추가</button>
+        </fieldset>
+
+        <div class="mb-3">
+          <label for="start_date" class="form-label">시작 날짜</label>
+          <input type="date" class="form-control" id="start_date" name="start_date" required="required" value="2000-01-01">
+        </div>
+        <div class="mb-3">
+          <label for="end_date" class="form-label">종료 날짜</label>
+          <input type="date" class="form-control" id="end_date" name="end_date" required="required" value="2024-12-31">
+        </div>
+
+        <div class="mb-3">
+          <label for="rebalance_frequency" class="form-label">리밸런싱 주기</label>
+          <select class="form-select" id="rebalance_frequency" name="rebalance_frequency">
+            <option value="daily">매일</option>
+            <option value="weekly">매주</option>
+            <option value="monthly">매월</option>
+            <option value="quarterly">매분기</option>
+            <option value="yearly">매년</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="slippage" class="form-label">슬리피지 (%)</label>
+          <input type="number" class="form-control" id="slippage" name="slippage" step="0.01" min="0" value="0">
+        </div>
+
+        <div class="mb-3">
+          <label for="include_cash" class="form-label">현금 포함</label>
+          <select class="form-select" id="include_cash" name="include_cash">
+            <option value="false">제외</option>
+            <option value="true">포함</option>
+          </select>
+        </div>
+
+        <div id="cash-options" class="collapse">
+          <div class="mb-3">
+            <label for="cash_ticker" class="form-label">현금 티커</label>
+            <input type="text" class="form-control" id="cash_ticker" name="cash_ticker" placeholder="예: KODEX 단기채권 ETF">
+          </div>
+          <div class="mb-3">
+            <label for="cash_weight" class="form-label">현금 비율 (%)</label>
+            <input type="number" class="form-control" id="cash_weight" name="cash_weight" step="0.01" min="0" value="0">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">백테스트 실행</button>
+      </form>
+    </div>
+  </div>
+  <div class="container">
+    <h2 class="h4">백테스트 결과</h2>
+    <div id="backtest-results" class="border p-3">
+      <!-- Results will be displayed here -->
+      <div id="loading" class="text-center collapse">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">로딩 중...</span>
+        </div>
+      </div>
+      <pre id="results-box">
+        백테스트 결과가 여기에 표시됩니다.
+      </pre>
+    </div>
+  </div>
+{% endblock content %}
+{% block script %}
+  <script type="module" src="{% static 'js/backtest/backtest_page.js' %}"></script>
+{% endblock script %}
