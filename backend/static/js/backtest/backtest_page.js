@@ -58,7 +58,7 @@ document
       slippage: parseFloat(formData.get("slippage") || 0),
       include_cash: formData.get("include_cash") || false,
       cash_ticker: formData.get("cash_ticker") || "CASH",
-      cash_weight: parseFloat(formData.get("cash_weight") || 0),
+      cash_weight: parseFloat(formData.get("cash_weight") / 100 || 0),
     };
 
     // Calculate allocations
