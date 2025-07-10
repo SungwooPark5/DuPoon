@@ -6,7 +6,7 @@ from . import views
 urlpatterns = [
     path(
         "static-allocation/",
-        views.BacktestView.as_view(),
+        views.BacktestAPIView.as_view(),
         name="static_allocation_backtest",
     ),
 ]
