@@ -95,7 +95,7 @@ document
 
       const result = await res.json();
       console.log(result);
-      resultsBox.textContent = JSON.stringify(result, null, 2);
+      updateResultsBox(result);
     } catch (error) {
       resultsBox.textContent =
         "백테스트 결과를 불러오는 중 오류가 발생했습니다.";
@@ -104,3 +104,46 @@ document
       spinner.classList.add("collapse");
     }
   });
+
+function updateResultsBox(result) {
+  const resultsBox = document.getElementById("results-box");
+  if (result && result.stats) {
+    const { cagr, yearly_vol, max_drawdown, yearly_sharpe, yearly_sortino } =
+      result.stats;
+
+    resultsBox.innerHTML = `
+        <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>지표</th>
+            <th>값</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>연평균 성장률 (CAGR)</td>
+            <td>${(cagr * 100).toFixed(2)}%</td>
+          </tr>
+          <tr>
+            <td>연평균 변동성</td>
+            <td>${(yearly_vol * 100).toFixed(2)}%</td>
+          </tr>
+          <tr>
+            <td>최대 낙폭</td>
+            <td>${(max_drawdown * 100).toFixed(2)}%</td>
+          </tr>
+          <tr>
+            <td>연평균 샤프 비율</td>
+            <td>${yearly_sharpe.toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td>연평균 소르티노 비율</td>
+            <td>${yearly_sortino.toFixed(2)}</td>
+          </tr>
+        </tbody>
+      </table>
+      `;
+  } else {
+    resultsBox.textContent = "백테스트 결과가 없습니다.";
+  }
+}
