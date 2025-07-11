@@ -95,7 +95,7 @@ document
 
       const result = await res.json();
       console.log(result);
-      resultsBox.textContent = JSON.stringify(result, null, 2);
+      updateResultsBox(result);
     } catch (error) {
       resultsBox.textContent =
         "백테스트 결과를 불러오는 중 오류가 발생했습니다.";
@@ -104,3 +104,91 @@ document
       spinner.classList.add("collapse");
     }
   });
+
+function updateResultsBox(result) {
+  const resultsBox = document.getElementById("results-box");
+  if (result && result.stats) {
+    const { cagr, yearly_vol, max_drawdown, yearly_sharpe, yearly_sortino } =
+      result.stats;
+
+    resultsBox.innerHTML = `
+        <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>지표</th>
+            <th>값</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>연평균 성장률 (CAGR)</td>
+            <td>${(cagr * 100).toFixed(2)}%</td>
+          </tr>
+          <tr>
+            <td>연평균 변동성</td>
+            <td>${(yearly_vol * 100).toFixed(2)}%</td>
+          </tr>
+          <tr>
+            <td>최대 낙폭</td>
+            <td>${(max_drawdown * 100).toFixed(2)}%</td>
+          </tr>
+          <tr>
+            <td>연평균 샤프 비율</td>
+            <td>${yearly_sharpe.toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td>연평균 소르티노 비율</td>
+            <td>${yearly_sortino.toFixed(2)}</td>
+          </tr>
+        </tbody>
+      </table>
+      `;
+    if (result.price) {
+      renderReturnsChart(result.price);
+    }
+  } else {
+    resultsBox.textContent = "백테스트 결과가 없습니다.";
+  }
+}
+
+function renderReturnsChart(priceData) {
+  const labels = priceData.map((item) => item.date);
+  const prices = priceData.map((item) => item.price);
+
+  const ctx = document.getElementById("returns-chart").getContext("2d");
+
+  if (window.returnsChart) {
+    window.returnsChart.destroy();
+  }
+
+  window.returnsChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "자산 가격",
+          data: prices,
+          borderColor: "rgba(75, 192, 192, 1)",
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          fill: true,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          type: "time",
+          time: {
+            unit: "day",
+            tooltipFormat: "yyyy-MM-dd",
+          },
+        },
+        y: {
+          beginAtZero: false,
+        },
+      },
+    },
+  });
+}
