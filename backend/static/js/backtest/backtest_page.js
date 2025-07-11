@@ -143,7 +143,52 @@ function updateResultsBox(result) {
         </tbody>
       </table>
       `;
+    if (result.price) {
+      renderReturnsChart(result.price);
+    }
   } else {
     resultsBox.textContent = "백테스트 결과가 없습니다.";
   }
+}
+
+function renderReturnsChart(priceData) {
+  const labels = priceData.map((item) => item.date);
+  const prices = priceData.map((item) => item.price);
+
+  const ctx = document.getElementById("returns-chart").getContext("2d");
+
+  if (window.returnsChart) {
+    window.returnsChart.destroy();
+  }
+
+  window.returnsChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "자산 가격",
+          data: prices,
+          borderColor: "rgba(75, 192, 192, 1)",
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          fill: true,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          type: "time",
+          time: {
+            unit: "day",
+            tooltipFormat: "yyyy-MM-dd",
+          },
+        },
+        y: {
+          beginAtZero: false,
+        },
+      },
+    },
+  });
 }
