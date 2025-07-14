@@ -52,6 +52,7 @@ urlpatterns = [
     path("", include("apps.core.urls")),
     path("stock/", include("apps.stock.urls", namespace="stock")),
     path("backtest/", include("apps.backtest.urls", namespace="backtest")),
+    path("strategy/", include("apps.strategy.urls", namespace="strategy")),
     # API endpoints
     path("api/stock/", include("apps.stock.api_urls")),
     path("api/backtest/", include("apps.backtest.api_urls")),
