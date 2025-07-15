@@ -1,9 +1,11 @@
 from django.db import models
 
-# from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 class Strategy(models.Model):
+    """
+    Model representing a trading strategy."""
     
     STRATEGY_TYPES = [
         ('STATIC', 'Static'),
@@ -23,6 +25,6 @@ class Strategy(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = "Strategy"
-        verbose_name_plural = "Strategies"
+        verbose_name = _("전략")
+        verbose_name_plural = _("전략")
         ordering = ['-created_at']
