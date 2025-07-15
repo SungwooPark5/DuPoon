@@ -29,6 +29,9 @@ class BacktestSerializer(serializers.Serializer):
     """
 
     allocations = AssetAllocationSerializer(many=True, required=True)
+    strategy_name = serializers.CharField(
+        required=False, allow_null=True, help_text="Name for strategy"
+    )
     start_date = serializers.DateField(
         required=False,
         allow_null=True,
@@ -91,6 +94,7 @@ class BacktestSerializer(serializers.Serializer):
     class Meta:
         swagger_schema_fields = {
             "example": {
+                "strategy_name": "60/40 Allocation",
                 "allocations": [
                     {"ticker": "SPY", "weight": 0.6},
                     {"ticker": "TLT", "weight": 0.4},
@@ -120,7 +124,7 @@ class BacktestResultSerializer(serializers.Serializer):
     Serializer for backtest result data.
     """
 
-    name = serializers.CharField()
+    name = serializers.CharField(required=False, allow_blank=True)
     stats = serializers.DictField()
     lookback_returns = serializers.DictField()
     price = serializers.ListField(child=PriceDataSerializer())

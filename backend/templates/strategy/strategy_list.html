@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>All Strategies</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Type</th>        
+        <th>Created At</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for strategy in strategies %}
+        <tr>
+          <td>{{ strategy.name }}</td>
+          <td>{{ strategy.description }}</td>
+          <td>{{ strategy.type }}</td>
+          <td>{{ strategy.created_at }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock content %}

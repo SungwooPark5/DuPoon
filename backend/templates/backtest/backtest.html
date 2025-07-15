@@ -8,12 +8,26 @@
     <div class="container border p-3 mb-3">
       <form id="backtest-form">
         <div class="mb-3">
-          <label for="strategy" class="form-label">전략 선택</label>
-          <select class="form-select" id="strategy" name="strategy">
-            <option value="static_allocation">정적 자산 배분</option>
+          <label for="strategy_name" class="form-label">전략 이름</label>
+          <input type="text" class="form-control" id="strategy_name" name="strategy_name" placeholder="예: 나의 첫 전략">
+        </div>
+
+        {% comment %}
+        <div class="mb-3">
+          <label for="strategy-description" class="form-label">전략 설명</label>
+          <input type="text" class="form-control" id="strategy-description" name="strategy_description" placeholder="예: 나의 첫 전략">
+        </div> {% endcomment %}
+
+        <div class="mb-3">
+          <label for="strategy-type" class="form-label">전략 종류</label>
+          <select class="form-select" id="strategy-type" name="strategy">
+            <option value="STATIC">Static</option>
+            <option value="DYNAMIC">Dynamic</option>
+            <option value="COMPLEX">Complex</option>
             <!-- Add more strategies as needed -->
           </select>
         </div>
+
         <fieldset class="mb-3">
           <legend class="col-form-label">자산 선택</legend>
           <div id="allocations">
@@ -77,11 +91,19 @@
         </div>
 
         <button type="submit" class="btn btn-primary">백테스트 실행</button>
+        {% comment %} <button type="button" id="save-strategy" class="btn btn-secondary">전략 저장</button> {% endcomment %}
       </form>
     </div>
   </div>
   <div class="container">
-    <h2 class="h4">백테스트 결과</h2>
+    <div class="row mb-2">
+      <div class="col">
+        <h2 class="h4">백테스트 결과</h2>
+      </div>
+      <div class="col-md-2">
+        <button id="save-results" type="button" class="btn btn-secondary collapse">결과 저장</button>
+      </div>
+    </div>
     <div id="backtest-results" class="border p-3">
       <!-- Results will be displayed here -->
       <div id="loading" class="text-center collapse">
