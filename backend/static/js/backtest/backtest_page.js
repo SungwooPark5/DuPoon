@@ -52,6 +52,7 @@ document
     const formData = new FormData(this);
     const data = {
       allocations: [],
+      strategy_name: formData.get("strategy_name") || null,
       start_date: formData.get("start_date") || null,
       end_date: formData.get("end_date") || null,
       rebalance_freq: formData.get("rebalance_frequency"),
