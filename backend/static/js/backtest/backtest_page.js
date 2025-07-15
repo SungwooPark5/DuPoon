@@ -84,6 +84,9 @@ document
 
     spinner.classList.remove("collapse");
     resultsBox.textContent = "백테스트 결과를 불러오는 중입니다...";
+    if (window.returnsChart) {
+      window.returnsChart.destroy(); // Clear previous chart if exists
+    }
 
     // Reset backtest results
     try {
@@ -203,70 +206,70 @@ document
   .addEventListener("click", async function () {});
 
 // 전략 저장 버튼
-document
-  .getElementById("save-strategy")
-  .addEventListener("click", async function () {
-    const name = document.getElementById("strategy-name").value;
-    const description = document.getElementById("strategy-description").value;
-    const type = document.getElementById("strategy-type").value;
+// document
+//   .getElementById("save-strategy")
+//   .addEventListener("click", async function () {
+//     const name = document.getElementById("strategy-name").value;
+//     const description = document.getElementById("strategy-description").value;
+//     const type = document.getElementById("strategy-type").value;
 
-    if (!name) {
-      alert("전략 이름을 입력해주세요.");
-      return;
-    }
+//     if (!name) {
+//       alert("전략 이름을 입력해주세요.");
+//       return;
+//     }
 
-    const formData = new FormData(document.getElementById("backtest-form"));
-    const parameters = {};
+//     const formData = new FormData(document.getElementById("backtest-form"));
+//     const parameters = {};
 
-    parameters.allocations = [];
-    const allocationKeys = [...formData.keys()].filter((k) =>
-      k.startsWith("allocations[")
-    );
-    const tickers = allocationKeys.filter((k) => k.endsWith("[ticker]"));
-    const weights = allocationKeys.filter((k) => k.endsWith("[weight]"));
+//     parameters.allocations = [];
+//     const allocationKeys = [...formData.keys()].filter((k) =>
+//       k.startsWith("allocations[")
+//     );
+//     const tickers = allocationKeys.filter((k) => k.endsWith("[ticker]"));
+//     const weights = allocationKeys.filter((k) => k.endsWith("[weight]"));
 
-    for (let i = 0; i < tickers.length; i++) {
-      const ticker = formData.get(tickers[i]);
-      const weight = parseFloat(formData.get(weights[i]) || 0) / 100;
-      if (ticker) {
-        parameters.allocations.push({ ticker, weight });
-      }
-    }
+//     for (let i = 0; i < tickers.length; i++) {
+//       const ticker = formData.get(tickers[i]);
+//       const weight = parseFloat(formData.get(weights[i]) || 0) / 100;
+//       if (ticker) {
+//         parameters.allocations.push({ ticker, weight });
+//       }
+//     }
 
-    parameters.start_date = formData.get("start_date") || null;
-    parameters.end_date = formData.get("end_date") || null;
-    parameters.rebalance_freq = formData.get("rebalance_frequency");
-    parameters.slippage = parseFloat(formData.get("slippage") || 0);
-    parameters.include_cash = formData.get("include_cash") || false;
-    parameters.cash_ticker = formData.get("cash_ticker") || "CASH";
-    parameters.cash_weight = parseFloat(formData.get("cash_weight") / 100 || 0);
+//     parameters.start_date = formData.get("start_date") || null;
+//     parameters.end_date = formData.get("end_date") || null;
+//     parameters.rebalance_freq = formData.get("rebalance_frequency");
+//     parameters.slippage = parseFloat(formData.get("slippage") || 0);
+//     parameters.include_cash = formData.get("include_cash") || false;
+//     parameters.cash_ticker = formData.get("cash_ticker") || "CASH";
+//     parameters.cash_weight = parseFloat(formData.get("cash_weight") / 100 || 0);
 
-    const payload = {
-      name: name,
-      description: description,
-      type: type,
-      parameters: parameters,
-    };
+//     const payload = {
+//       name: name,
+//       description: description,
+//       type: type,
+//       parameters: parameters,
+//     };
 
-    try {
-      const res = await fetch("/api/strategy/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": getCSRFToken() || "",
-        },
-        body: JSON.stringify(data),
-      });
+//     try {
+//       const res = await fetch("/api/strategy/", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           "X-CSRFToken": getCSRFToken() || "",
+//         },
+//         body: JSON.stringify(data),
+//       });
 
-      if (res.ok) {
-        alert("전략이 저장되었습니다.");
-      } else {
-        const errorData = await res.json();
-        console.error("저장 오류:", errorData);
-        alert("전략 저장에 실패했습니다: " + errorData.detail);
-      }
-    } catch (err) {
-      console.error(err);
-      alert("저장 중 오류 발생");
-    }
-  });
+//       if (res.ok) {
+//         alert("전략이 저장되었습니다.");
+//       } else {
+//         const errorData = await res.json();
+//         console.error("저장 오류:", errorData);
+//         alert("전략 저장에 실패했습니다: " + errorData.detail);
+//       }
+//     } catch (err) {
+//       console.error(err);
+//       alert("저장 중 오류 발생");
+//     }
+//   });

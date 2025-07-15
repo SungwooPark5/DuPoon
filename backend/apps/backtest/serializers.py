@@ -124,7 +124,7 @@ class BacktestResultSerializer(serializers.Serializer):
     Serializer for backtest result data.
     """
 
-    name = serializers.CharField()
+    name = serializers.CharField(required=False, allow_blank=True)
     stats = serializers.DictField()
     lookback_returns = serializers.DictField()
     price = serializers.ListField(child=PriceDataSerializer())
