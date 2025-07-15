@@ -56,6 +56,7 @@ urlpatterns = [
     # API endpoints
     path("api/stock/", include("apps.stock.api_urls")),
     path("api/backtest/", include("apps.backtest.api_urls")),
+    path("api/strategy/", include("apps.strategy.api_urls")),
 ]
 
 if settings.DEBUG:
