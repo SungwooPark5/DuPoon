@@ -79,6 +79,8 @@ document
     // Loading spinner and results box
     const spinner = document.getElementById("loading");
     const resultsBox = document.getElementById("results-box");
+    const saveResults = document.getElementById("save-results");
+
     spinner.classList.remove("collapse");
     resultsBox.textContent = "백테스트 결과를 불러오는 중입니다...";
 
@@ -96,6 +98,7 @@ document
       const result = await res.json();
       console.log(result);
       updateResultsBox(result);
+      saveResults.classList.remove("collapse"); // 저장 버튼 활성화
     } catch (error) {
       resultsBox.textContent =
         "백테스트 결과를 불러오는 중 오류가 발생했습니다.";
@@ -192,3 +195,8 @@ function renderReturnsChart(priceData) {
     },
   });
 }
+
+// TODO: 백테스트 결과 저장 기능 추가
+document
+  .getElementById("save-results")
+  .addEventListener("click", async function () {});
