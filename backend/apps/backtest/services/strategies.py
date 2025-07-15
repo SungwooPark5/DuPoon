@@ -41,6 +41,8 @@ def get_static_allocation_strategy(
     if run_alog is None:
         raise ValueError(f"Invalid rebalance frequency: {config.rebalance_freq}")
 
+    print(config.strategy_name)
+
     # 전략 정의
     strategy = bt.Strategy(
         config.strategy_name,

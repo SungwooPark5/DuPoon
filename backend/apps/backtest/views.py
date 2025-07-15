@@ -55,7 +55,9 @@ class BacktestAPIView(APIView):
 
             config = BacktestConfig(
                 allocations=serializer.validated_data["allocations"],
-                strategy_name=serializer.validated_data.get("strategy_name"),
+                strategy_name=serializer.validated_data.get(
+                    "strategy_name", "Custom Allocation"
+                ),
                 start_date=serializer.validated_data.get("start_date"),
                 end_date=serializer.validated_data.get("end_date"),
                 rebalance_freq=serializer.validated_data.get("rebalance_freq"),
