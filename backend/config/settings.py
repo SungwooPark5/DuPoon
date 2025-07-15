@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "apps.core",
     "apps.stock",
     "apps.backtest",
+    "apps.strategy"
 ]
 
 MIDDLEWARE = [
