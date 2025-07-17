@@ -1,0 +1,32 @@
+<!-- Save Strategy Modal -->
+<div class="modal fade" id="saveStrategyModal" tabindex="-1" aria-labelledby="saveStrategyModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="saveStrategyModalLabel">전략 저장</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+      </div>
+      <div class="modal-body">
+        <form id="strategyForm">
+          <div class="mb-3">
+            <label for="strategyName" class="form-label">전략 이름</label>
+            <input type="text" class="form-control" id="strategyName" required="required">
+          </div>
+          <div class="mb-3">
+            <label for="strategyDescription" class="form-label">설명</label>
+            <textarea class="form-control" id="strategyDescription" rows="3"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="strategyType" class="form-label">전략 타입</label>
+            <select class="form-select" id="strategyType">
+              <option value="Static">Static</option>
+              <option value="Dynamic">Dynamic</option>
+              <option value="Complex">Complex</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">저장</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
