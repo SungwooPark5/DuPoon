@@ -1,5 +1,59 @@
 import { getCSRFToken } from "../utils.js";
 
+// Apply strategy to form
+document.addEventListener("DOMContentLoaded", function () {
+  window.addEventListener("strategySelected", (event) => {
+    const strategy = event.detail;
+    applyStrategyToForm(strategy);
+  });
+
+  function applyStrategyToForm(strategy) {
+    console.log(strategy);
+
+    document.querySelector("input[name='strategy_name']").value =
+      strategy.name || "";
+    document.querySelector("select[name='rebalance_frequency']").value =
+      strategy.rebalance_frequency || "monthly";
+    document.querySelector("select[name='include_cash']").value =
+      strategy.include_cash ? "true" : "false";
+    document.querySelector("input[name='cash_ticker']").value =
+      strategy.cash_ticker || "CASH";
+    document.querySelector("input[name='cash_weight']").value = (
+      strategy.cash_weight * 100
+    ).toFixed(2);
+
+    fillAllocations(strategy.allocations || []);
+  }
+
+  function fillAllocations(allocations) {
+    const allocationsDiv = document.getElementById("allocations");
+    allocationsDiv.innerHTML = ""; // Clear existing allocations
+
+    allocations.forEach((allocation, index) => {
+      const newAllocation = document.createElement("div");
+      newAllocation.className = "allocation row mb-2";
+
+      newAllocation.innerHTML = `
+          <div class="col-md-5">
+              <input name="allocations[${index}][ticker]" placeholder="티커" class="form-control mb-1" value="${
+        allocation.ticker
+      }" required>
+          </div>
+          <div class="col-md-5">
+              <input name="allocations[${index}][weight]" placeholder="비율 (%)" class="form-control mb-1" value="${(
+        allocation.weight * 100
+      ).toFixed(2)}" required>
+          </div>
+          <div class="col-md-2">
+              <button type="button" class="btn btn-outline-danger remove-allocation">삭제</button>
+          </div>
+      `;
+
+      allocationsDiv.appendChild(newAllocation);
+    });
+  }
+});
+
 document
   .getElementById("add-allocation")
   .addEventListener("click", function () {
@@ -199,10 +253,3 @@ function renderReturnsChart(priceData) {
     },
   });
 }
-
-// TODO: 백테스트 결과 저장 기능 추가
-// document
-//   .getElementById("save-results")
-//   .addEventListener("click", async function () {});
-
-// 백테스트 결과 저장

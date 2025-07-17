@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
   const strategyList = document.getElementById("strategyList");
+  const strategyModal = new bootstrap.Modal(
+    document.getElementById("loadStrategyModal")
+  );
 
   async function fetchStrategies() {
     try {
@@ -25,7 +28,11 @@ document.addEventListener("DOMContentLoaded", function () {
       listItem.textContent = strategy.name;
       listItem.dataset.strategyId = strategy.id;
       listItem.addEventListener("click", () => {
-        // applyStrategyToForm(strategy);
+        const event = new CustomEvent("strategySelected", {
+          detail: strategy,
+        });
+        window.dispatchEvent(event);
+        strategyModal.hide();
       });
       strategyList.appendChild(listItem);
     });
