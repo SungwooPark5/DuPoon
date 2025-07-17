@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 
-from rest_framework import generics
+from rest_framework import generics, viewsets
 
 from .models import Strategy
 from .serializers import StrategySerializer
@@ -22,6 +22,6 @@ class StrategyListView(ListView):
 
 
 # APIViews
-class StrategyListCreateAPIView(generics.ListCreateAPIView):
+class StrategyViewSet(viewsets.ModelViewSet):
     queryset = Strategy.objects.all()
     serializer_class = StrategySerializer
