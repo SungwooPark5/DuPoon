@@ -7,17 +7,9 @@
     <p>지정한 전략으로 백테스트 실행</p>
     <div class="container border p-3 mb-3">
       <form id="backtest-form">
-        {% comment %} <div class="mb-3">
-          <label for="strategy_name" class="form-label">전략 이름</label>
-          <input type="text" class="form-control" id="strategy_name" name="strategy_name" placeholder="예: 나의 첫 전략">
-        </div> {% endcomment %}
-
-        {% comment %}
         <div class="mb-3">
-          <label for="strategy-description" class="form-label">전략 설명</label>
-          <input type="text" class="form-control" id="strategy-description" name="strategy_description" placeholder="예: 나의 첫 전략">
-        </div> {% endcomment %}
-
+          <button type="button" class="btn btn-secondary" id="open-load-modal" data-bs-toggle="modal" data-bs-target="#loadStrategyModal">전략 불러오기</button>
+        </div>
         <div class="mb-3">
           <label for="strategy-type" class="form-label">전략 종류</label>
           <select class="form-select" id="strategy-type" name="strategy">
@@ -91,7 +83,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">백테스트 실행</button>
-        <button type="button" class="btn btn-secondary" id="open-save-modal" data-bs-toggle="modal" data-bs-target="#saveStrategyModal"W>전략 저장</button>
+        <button type="button" class="btn btn-secondary" id="open-save-modal" data-bs-toggle="modal" data-bs-target="#saveStrategyModal" w="W">전략 저장</button>
       </form>
     </div>
   </div>
@@ -121,8 +113,10 @@
   </div>
 </div>
 {% include 'strategy/save_strategy_modal.html' %}
+{% include 'strategy/load_strategy_modal.html' %}
 {% endblock content %}
 {% block script %}
-  <script type="module" src="{% static 'js/backtest/backtest_page.js' %}"></script>
-  <script type="module" src="{% static 'js/strategy/save_strategy_modal.js' %}"></script>
+<script type="module" src="{% static 'js/backtest/backtest_page.js' %}"></script>
+<script type="module" src="{% static 'js/strategy/save_strategy_modal.js' %}"></script>
+<script type="module" src="{% static 'js/strategy/load_strategy_modal.js' %}"></script>
 {% endblock script %}
