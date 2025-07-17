@@ -1,9 +1,14 @@
-from django.urls import path
+from django.urls import path, include
 
-from .views import StrategyListCreateAPIView
+from rest_framework.routers import DefaultRouter
+
+from .views import StrategyViewSet
 
 app_name = "strategy"
 
+router = DefaultRouter()
+router.register(r"strategies", StrategyViewSet, basename="strategy")
+
 urlpatterns = [
-    path("", StrategyListCreateAPIView.as_view(), name="strategy-list-create"),
+    path("", include(router.urls)),
 ]
