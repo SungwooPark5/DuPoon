@@ -2,14 +2,30 @@ import { getCSRFToken } from "../utils.js";
 
 // Apply strategy to form
 document.addEventListener("DOMContentLoaded", function () {
+  // Listen for strategy selection event from strategy load modal
   window.addEventListener("strategySelected", (event) => {
     const strategy = event.detail;
     applyStrategyToForm(strategy);
   });
 
-  function applyStrategyToForm(strategy) {
-    console.log(strategy);
+  const openSaveModal = document.getElementById("open-save-modal");
+  const strategyNameInput = document.getElementById("strategyName");
+  const strategyTypeInput = document.getElementById("strategyType");
+  const saveStrategyModal = new bootstrap.Modal(
+    document.getElementById("saveStrategyModal")
+  );
 
+  openSaveModal.addEventListener("click", () => {
+    // Set strategy name and type in the save modal
+    strategyNameInput.value =
+      document.querySelector("input[name='strategy_name']").value || "";
+    strategyTypeInput.value =
+      document
+        .querySelector("select[name='strategy_type']")
+        .value.toUpperCase() || "STATIC";
+  });
+
+  function applyStrategyToForm(strategy) {
     document.querySelector("input[name='strategy_name']").value =
       strategy.name || "";
     document.querySelector("select[name='rebalance_frequency']").value =
