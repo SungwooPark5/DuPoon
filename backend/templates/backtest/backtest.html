@@ -18,7 +18,7 @@
 
         <div class="mb-3">
           <label for="strategy-type" class="form-label">전략 종류</label>
-          <select class="form-select" id="strategy-type" name="strategy">
+          <select class="form-select" id="strategy_type" name="strategy_type">
             <option value="STATIC">Static</option>
             <option value="DYNAMIC">Dynamic</option>
             <option value="COMPLEX">Complex</option>
@@ -45,15 +45,6 @@
         </fieldset>
 
         <div class="mb-3">
-          <label for="start_date" class="form-label">시작 날짜</label>
-          <input type="date" class="form-control" id="start_date" name="start_date" required="required" value="2000-01-01">
-        </div>
-        <div class="mb-3">
-          <label for="end_date" class="form-label">종료 날짜</label>
-          <input type="date" class="form-control" id="end_date" name="end_date" required="required" value="2024-12-31">
-        </div>
-
-        <div class="mb-3">
           <label for="rebalance_frequency" class="form-label">리밸런싱 주기</label>
           <select class="form-select" id="rebalance_frequency" name="rebalance_frequency">
             <option value="daily">매일</option>
@@ -62,6 +53,15 @@
             <option value="quarterly">매분기</option>
             <option value="yearly">매년</option>
           </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="start_date" class="form-label">시작 날짜</label>
+          <input type="date" class="form-control" id="start_date" name="start_date" required="required" value="2000-01-01">
+        </div>
+        <div class="mb-3">
+          <label for="end_date" class="form-label">종료 날짜</label>
+          <input type="date" class="form-control" id="end_date" name="end_date" required="required" value="2024-12-31">
         </div>
 
         <div class="mb-3">
