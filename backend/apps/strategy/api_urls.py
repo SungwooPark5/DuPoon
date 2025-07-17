@@ -4,8 +4,6 @@ from rest_framework.routers import DefaultRouter
 
 from .views import StrategyViewSet
 
-app_name = "strategy"
-
 router = DefaultRouter()
 router.register(r"strategies", StrategyViewSet, basename="strategy")
 
