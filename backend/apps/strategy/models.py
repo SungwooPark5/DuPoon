@@ -47,11 +47,15 @@ class Strategy(models.Model):
         help_text="Whether to include cash in the strategy",
     )
     cash_ticker = models.CharField(
+        null=True,
+        blank=True,
         max_length=20,
         default="CASH",
         help_text="Ticker symbol for cash asset in the strategy",
     )
     cash_weight = models.FloatField(
+        null=True,
+        blank=True,
         default=0.0,
         help_text="Weight of cash in the strategy (0.0 to 1.0)",
         validators=[

@@ -201,8 +201,8 @@ function renderReturnsChart(priceData) {
 }
 
 // TODO: 백테스트 결과 저장 기능 추가
-document
-  .getElementById("save-results")
-  .addEventListener("click", async function () {});
+// document
+//   .getElementById("save-results")
+//   .addEventListener("click", async function () {});
 
 // 백테스트 결과 저장
