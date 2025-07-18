@@ -15,8 +15,12 @@ from common.utils import serialize_backtest_stats
 
 from .services.strategies import get_static_allocation_strategy
 from .services.dtos import BacktestConfig
-from .serializers import BacktestSerializer, BacktestResultSerializer
-from .models import BacktestResult
+from .serializers import (
+    BacktestSerializer,
+    BacktestResultSerializer,
+    BacktestStatSerializer,
+)
+from .models import BacktestStat
 
 
 # Create your views here.
@@ -90,14 +94,14 @@ class BacktestAPIView(APIView):
             )
 
 
-class BacktestResultViewSet(viewsets.ModelViewSet):
+class BacktestStatViewSet(viewsets.ModelViewSet):
     """
     ViewSet for managing backtest results.
     """
 
-    queryset = BacktestResult.objects.all()
-    serializer_class = BacktestResultSerializer
+    queryset = BacktestStat.objects.all()
+    serializer_class = BacktestStatSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return BacktestResult.objects.all().order_by("-created_at")
+        return BacktestStat.objects.all().order_by("-created_at")

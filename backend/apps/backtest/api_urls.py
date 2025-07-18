@@ -4,9 +4,7 @@ from rest_framework.routers import DefaultRouter
 from . import views
 
 router = DefaultRouter()
-router.register(
-    r"backtest-results", views.BacktestResultViewSet, basename="backtest-results"
-)
+router.register(r"backtest-stats", views.BacktestStatViewSet, basename="backtest-stats")
 
 urlpatterns = [
     path(
