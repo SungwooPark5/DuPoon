@@ -17,6 +17,13 @@ class BacktestStat(models.Model):
     strategy = models.ForeignKey(
         Strategy, on_delete=models.CASCADE, related_name="backtest_results"
     )
+
+    name = models.CharField(max_length=255, verbose_name=_("결과 이름"))
+    description = models.TextField(
+        blank=True,
+        verbose_name=_("결과 설명"),
+        help_text=_("백테스트 결과에 대한 설명을 입력하세요."),
+    )
     start_date = models.DateField()
     end_date = models.DateField()
     total_return = models.FloatField(help_text="Total Return Percentage")
