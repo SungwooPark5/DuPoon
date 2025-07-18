@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
@@ -16,6 +16,7 @@ from common.utils import serialize_backtest_stats
 from .services.strategies import get_static_allocation_strategy
 from .services.dtos import BacktestConfig
 from .serializers import BacktestSerializer, BacktestResultSerializer
+from .models import BacktestResult
 
 
 # Create your views here.
@@ -87,3 +88,16 @@ class BacktestAPIView(APIView):
                 {"message": f"Error during backtest: {e}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+
+class BacktestResultViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for managing backtest results.
+    """
+
+    queryset = BacktestResult.objects.all()
+    serializer_class = BacktestResultSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return BacktestResult.objects.all().order_by("-created_at")
