@@ -99,7 +99,7 @@
         <h2 class="h4">백테스트 결과</h2>
       </div>
       <div class="col-md-2">
-        <button type="button" id="open-save-modal" class="btn btn-primary collapse" data-bs-toggle="modal" data-bs-target="#saveStrategyModal">
+        <button type="button" id="open-result-save-modal" class="btn btn-secondary collapse" data-bs-toggle="modal" data-bs-target="#saveResultModal">
           결과 저장
         </button>
       </div>
@@ -120,6 +120,7 @@
 </div>
 {% include 'strategy/save_strategy_modal.html' %}
 {% include 'strategy/load_strategy_modal.html' %}
+{% include 'backtest/save_result_modal.html' %}
 {% endblock content %}
 {% block script %}
 <script type="module" src="{% static 'js/backtest/backtest_page.js' %}"></script>
