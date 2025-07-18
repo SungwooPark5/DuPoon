@@ -151,6 +151,9 @@ document
     const spinner = document.getElementById("loading");
     const resultsBox = document.getElementById("results-box");
     const openSaveModal = document.getElementById("open-save-modal");
+    const openSaveResultModal = document.getElementById(
+      "open-result-save-modal"
+    );
 
     spinner.classList.remove("collapse");
     resultsBox.textContent = "백테스트 결과를 불러오는 중입니다...";
@@ -172,6 +175,7 @@ document
       const result = await res.json();
       console.log(result);
       updateResultsBox(result);
+      openSaveResultModal.classList.remove("collapse"); // 결과 저장 모달 버튼 활성화
       openSaveModal.classList.remove("collapse"); // 저장 모달 버튼 활성화
     } catch (error) {
       resultsBox.textContent =
