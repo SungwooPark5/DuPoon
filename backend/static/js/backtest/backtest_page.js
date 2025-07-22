@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function applyStrategyToForm(strategy) {
+    document.querySelector("input[name='strategy_id']").value =
+      strategy.id || null;
     document.querySelector("input[name='strategy_name']").value =
       strategy.name || "";
     document.querySelector("select[name='rebalance_frequency']").value =

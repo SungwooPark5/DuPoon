@@ -34,7 +34,40 @@ document.addEventListener("DOMContentLoaded", function () {
       cash_weight: parseFloat(formBacktestFormData.get("cash_weight") || 0),
     };
 
+    const strategyID = formBacktestFormData.get("strategy_id") || null;
+    console.log(strategyID);
     // save strategy via API
+    if (strategyID) {
+      update_strategy(strategyID, payload);
+    } else {
+      create_strategy(payload);
+    }
+  });
+
+  // Function to update an existing strategy
+  async function update_strategy(id, payload) {
+    try {
+      const response = await fetch(`/api/strategy/strategies/${id}/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken() || "",
+        },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log("Strategy updated successfully:", data);
+      strategyModal.hide(); // Hide the modal after updating
+      alert("전략이 업데이트되었습니다.");
+    } catch (error) {
+      console.error("Error updating strategy:", error);
+    }
+  }
+  // Function to create a new strategy
+  async function create_strategy(payload) {
     try {
       const response = await fetch("/api/strategy/strategies/", {
         method: "POST",
@@ -44,20 +77,20 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         body: JSON.stringify(payload),
       });
-
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
       const data = await response.json();
-      console.log("Strategy saved successfully:", data);
-      strategyModal.hide(); // Hide the modal after saving
-      alert("전략이 저장되었습니다.");
-    } catch (error) {
-      console.error("Error saving strategy:", error);
-    }
-  });
+      console.log("Strategy created successfully:", data);
+      strategyModal.hide(); // Hide the modal after creating
+      alert("전략이 생성되었습니다.");
 
+      strategyForm.reset();
+      strategyID.value = ""; // Clear the strategy ID for new entries
+    } catch (error) {
+      console.error("Error creating strategy:", error);
+    }
+  }
   function getAllocationsFromBacktestForm() {
     const allocations = [];
     const allocationElements = document.querySelectorAll(".allocation");
