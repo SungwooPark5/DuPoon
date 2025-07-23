@@ -2,8 +2,9 @@ import { getCSRFToken } from "../utils.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const strategyForm = document.getElementById("strategyForm");
-  const saveStrategyModal = document.getElementById("saveStrategyModal");
-  const strategyModal = new bootstrap.Modal(saveStrategyModal);
+  const strategyModal = bootstrap.Modal.getOrCreateInstance(
+    document.getElementById("saveStrategyModal")
+  );
 
   strategyForm.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -86,7 +87,17 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("전략이 생성되었습니다.");
 
       strategyForm.reset();
-      strategyID.value = ""; // Clear the strategy ID for new entries
+      console.log("New strategy ID:", data.id);
+
+      if (window.openResultModalAfterSave) {
+        window.openResultModalAfterSave = false;
+        const saveResultModal = new bootstrap.Modal(
+          document.getElementById("saveResultModal")
+        );
+        saveResultModal.show();
+      }
+
+      return data.id; // Return the new strategy ID
     } catch (error) {
       console.error("Error creating strategy:", error);
     }
