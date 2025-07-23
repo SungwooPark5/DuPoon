@@ -9,7 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   const openSaveModal = document.getElementById("open-save-modal");
+  const openSaveResultModal = document.getElementById("open-result-save-modal");
   const strategyNameInput = document.getElementById("strategyName");
+  const strategyId = document.getElementById("strategy_id");
   const strategyTypeInput = document.getElementById("strategyType");
   const saveStrategyModal = new bootstrap.Modal(
     document.getElementById("saveStrategyModal")
@@ -23,6 +25,21 @@ document.addEventListener("DOMContentLoaded", function () {
       document
         .querySelector("select[name='strategy_type']")
         .value.toUpperCase() || "STATIC";
+  });
+
+  openSaveResultModal.addEventListener("click", () => {
+    if (!strategyId.value) {
+      window.openResultModalAfterSave = true;
+      alert("전략을 먼저 저장해주세요.");
+      saveStrategyModal.show();
+      return;
+    } else {
+      const saveResultModal = new bootstrap.Modal(
+        document.getElementById("saveResultModal")
+      );
+      saveResultModal.show();
+      return;
+    }
   });
 
   function applyStrategyToForm(strategy) {

@@ -8,14 +8,15 @@
     <div class="container border p-3 mb-3">
       <form id="backtest-form">
         <div class="mb-3">
+          <label for="strategy_id" class="form-label">전략 ID</label>
+          <input type="text" id="strategy_id" name="strategy_id" readonly="readonly" class="form-control" placeholder="없음">
+        </div>
+        <div class="mb-3">
           <button type="button" class="btn btn-secondary" id="open-load-modal" data-bs-toggle="modal" data-bs-target="#loadStrategyModal">전략 불러오기</button>
         </div>
         <div class="mb-3">
           <label for="strategy_name" class="form-label">전략 이름</label>
           <input type="text" class="form-control" id="strategy_name" name="strategy_name" placeholder="전략 이름">
-        </div>
-        <div class="d-none">
-          <input type="text" id="strategy_id" name="strategy_id">
         </div>
 
         <div class="mb-3">
@@ -101,7 +102,7 @@
         <h2 class="h4">백테스트 결과</h2>
       </div>
       <div class="col-md-2">
-        <button type="button" id="open-result-save-modal" class="btn btn-secondary collapse" data-bs-toggle="modal" data-bs-target="#saveResultModal">
+        <button type="button" id="open-result-save-modal" class="btn btn-secondary collapse">
           결과 저장
         </button>
       </div>
