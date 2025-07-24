@@ -35,14 +35,15 @@ document.addEventListener("DOMContentLoaded", function () {
       cash_weight: parseFloat(formBacktestFormData.get("cash_weight") || 0),
     };
 
-    const strategyID = formBacktestFormData.get("strategy_id") || null;
+    let strategyID = formBacktestFormData.get("strategy_id") || null;
     console.log(strategyID);
     // save strategy via API
     if (strategyID) {
       update_strategy(strategyID, payload);
     } else {
-      create_strategy(payload);
+      strategyID = await create_strategy(payload);
     }
+    updateBacktestFormData(strategyID, payload);
   });
 
   // Function to update an existing strategy
@@ -87,21 +88,28 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("전략이 생성되었습니다.");
 
       strategyForm.reset();
-      console.log("New strategy ID:", data.id);
-
-      if (window.openResultModalAfterSave) {
-        window.openResultModalAfterSave = false;
-        const saveResultModal = new bootstrap.Modal(
-          document.getElementById("saveResultModal")
-        );
-        saveResultModal.show();
-      }
 
       return data.id; // Return the new strategy ID
     } catch (error) {
       console.error("Error creating strategy:", error);
     }
   }
+
+  function updateBacktestFormData(strategyID, payload) {
+    const strategyIdInput = document.querySelector("input[name='strategy_id']");
+    const strategyNameInput = document.querySelector(
+      "input[name='strategy_name']"
+    );
+    const strategyTypeSelect = document.querySelector(
+      "select[name='strategy_type']"
+    );
+
+    if (strategyIdInput) strategyIdInput.value = strategyID;
+    if (strategyNameInput) strategyNameInput.value = payload.name;
+    if (strategyTypeSelect)
+      strategyTypeSelect.value = payload.type.toUpperCase();
+  }
+
   function getAllocationsFromBacktestForm() {
     const allocations = [];
     const allocationElements = document.querySelectorAll(".allocation");

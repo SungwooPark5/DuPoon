@@ -11,16 +11,25 @@
 
         <form id="resultForm">
           <div class="mb-3">
-            <label for="resultName" class="form-label">이름</label>
-            <input type="text" class="form-control" id="resultName" required="required">
+            <label for="strategyId" class="form-label">전략 ID</label>
+            <input type="text" class="form-control" id="strategyId" readonly="readonly">
           </div>
           <div class="mb-3">
-            <label for="resultDescription" class="form-label">설명</label>
-            <textarea class="form-control" id="resultDescription" rows="3"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">저장</button>
-        </form>
+            <div class="mb-3">
+              <label for="strategyName" class="form-label">전략 이름</label>
+              <input type="text" class="form-control" id="strategyName" readonly="readonly">
+            </div>
+            <div class="mb-3">
+              <label for="resultName" class="form-label">이름</label>
+              <input type="text" class="form-control" id="resultName" required="required">
+            </div>
+            <div class="mb-3">
+              <label for="resultDescription" class="form-label">설명</label>
+              <textarea class="form-control" id="resultDescription" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">저장</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
