@@ -1,4 +1,5 @@
 import { getCSRFToken } from "../utils.js";
+export let latestBacktestResult = null;
 
 // Apply strategy to form
 document.addEventListener("DOMContentLoaded", function () {
@@ -17,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("saveStrategyModal")
   );
 
+  // TODO: 전략 저장 모달이 click이 아닌 다른 방식으로 열릴 때, 전략 이름, 전략 Id 전달하도록 수정하기
   openSaveModal.addEventListener("click", () => {
     // Set strategy name and type in the save modal
     strategyNameInput.value =
@@ -27,9 +29,9 @@ document.addEventListener("DOMContentLoaded", function () {
         .value.toUpperCase() || "STATIC";
   });
 
+  // TODO: 결과 저장 모달이 열릴 때, 전략 이름, 전략 Id 전달하기
   openSaveResultModal.addEventListener("click", () => {
     if (!strategyId.value) {
-      window.openResultModalAfterSave = true;
       alert("전략을 먼저 저장해주세요.");
       saveStrategyModal.show();
       return;
@@ -141,6 +143,7 @@ document
     const formData = new FormData(this);
     const data = {
       allocations: [],
+      name: formData.get("strategy_name") || null,
       // strategy_name: formData.get("strategy_name") || null,
       start_date: formData.get("start_date") || null,
       end_date: formData.get("end_date") || null,
@@ -155,7 +158,7 @@ document
     const allocationKeys = [...formData.keys()].filter((k) =>
       k.startsWith("allocations[")
     );
-    const tickers = allocationKeys.filter((k) => k.endsWith("[ticker]"));
+    const tickers = allocationKeys.filter((k) => k.endsWith("[ticker]").trim());
     const weights = allocationKeys.filter((k) => k.endsWith("[weight]"));
 
     for (let i = 0; i < tickers.length; i++) {
@@ -193,6 +196,7 @@ document
 
       const result = await res.json();
       console.log(result);
+      latestBacktestResult = result; // Store the latest result globally
       updateResultsBox(result);
       openSaveResultModal.classList.remove("collapse"); // 결과 저장 모달 버튼 활성화
       openSaveModal.classList.remove("collapse"); // 저장 모달 버튼 활성화
