@@ -1,0 +1,36 @@
+<!-- Save Result Modal -->
+<div class="modal fade" id="saveResultModal" tabindex="-1" aria-labelledby="saveResultModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="saveResultModalLabel">결과 저장</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Information for Related Strategy-->
+
+        <form id="resultForm">
+          <div class="mb-3">
+            <label for="strategyId" class="form-label">전략 ID</label>
+            <input type="text" class="form-control" id="strategyId" name="strategy_id" readonly="readonly">
+          </div>
+          <div class="mb-3">
+            <div class="mb-3">
+              <label for="strategyName" class="form-label">전략 이름</label>
+              <input type="text" class="form-control" id="strategyName" name="strategy_name" readonly="readonly">
+            </div>
+            <div class="mb-3">
+              <label for="resultName" class="form-label">이름</label>
+              <input type="text" class="form-control" id="resultName" required="required">
+            </div>
+            <div class="mb-3">
+              <label for="resultDescription" class="form-label">설명</label>
+              <textarea class="form-control" id="resultDescription" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">저장</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

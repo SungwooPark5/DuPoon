@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from apps.stock.models import Stock
+from .models import BacktestStat
 
 
 class AssetAllocationSerializer(serializers.Serializer):
@@ -130,3 +131,13 @@ class BacktestResultSerializer(serializers.Serializer):
     price = serializers.ListField(child=PriceDataSerializer())
 
     pass
+
+
+class BacktestStatSerializer(serializers.ModelSerializer):
+    """
+    Serializer for backtest statistics data.
+    """
+
+    class Meta:
+        model = BacktestStat
+        fields = "__all__"

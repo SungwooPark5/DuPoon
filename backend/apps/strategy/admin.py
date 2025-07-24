@@ -3,6 +3,7 @@ from django.contrib import admin
 from .models import Strategy
 from django.utils.translation import gettext_lazy as _
 
+
 # Register your models here.
 @admin.register(Strategy)
 class StrategyAdmin(admin.ModelAdmin):
@@ -22,6 +23,21 @@ class StrategyAdmin(admin.ModelAdmin):
             {
                 "fields": ("type", "parameters"),
                 "description": _("Select the type and parameters for the strategy."),
+            },
+        ),
+        (
+            _("Configurations"),
+            {
+                "fields": (
+                    "allocations",
+                    "rebalance_frequency",
+                    "include_cash",
+                    "cash_ticker",
+                    "cash_weight",
+                ),
+                "description": _(
+                    "Configure asset allocations and cash settings for the strategy."
+                ),
             },
         ),
     )

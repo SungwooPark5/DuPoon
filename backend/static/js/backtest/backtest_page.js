@@ -1,4 +1,111 @@
 import { getCSRFToken } from "../utils.js";
+let latestBacktestResult = null;
+
+export function getLatestBacktestResult() {
+  return latestBacktestResult;
+}
+
+// Apply strategy to form
+document.addEventListener("DOMContentLoaded", function () {
+  // Listen for strategy selection event from strategy load modal
+  window.addEventListener("strategySelected", (event) => {
+    const strategy = event.detail;
+    applyStrategyToForm(strategy);
+  });
+
+  const openSaveModal = document.getElementById("open-save-modal");
+  const openSaveResultModal = document.getElementById("open-result-save-modal");
+  const strategyNameInput = document.getElementById("strategyName");
+  const strategyId = document.getElementById("strategy_id");
+  const strategyTypeInput = document.getElementById("strategyType");
+  const saveStrategyModal = new bootstrap.Modal(
+    document.getElementById("saveStrategyModal")
+  );
+
+  // TODO: 전략 저장 모달이 click이 아닌 다른 방식으로 열릴 때, 전략 이름, 전략 Id 전달하도록 수정하기
+  openSaveModal.addEventListener("click", () => {
+    // Set strategy name and type in the save modal
+    strategyNameInput.value =
+      document.querySelector("input[name='strategy_name']").value || "";
+    strategyTypeInput.value =
+      document
+        .querySelector("select[name='strategy_type']")
+        .value.toUpperCase() || "STATIC";
+  });
+
+  // TODO: 결과 저장 모달이 열릴 때, 전략 이름, 전략 Id 전달하기
+  openSaveResultModal.addEventListener("click", () => {
+    const strategyIdInput = document
+      .getElementById("resultForm")
+      .querySelector("input[name='strategy_id']");
+    const strategyNameInput = document
+      .getElementById("resultForm")
+      .querySelector("input[name='strategy_name']");
+
+    strategyIdInput.value =
+      document.querySelector("input[name='strategy_id']").value || "";
+    strategyNameInput.value =
+      document.querySelector("input[name='strategy_name']").value || "";
+
+    if (!strategyIdInput || !strategyIdInput.value) {
+      alert("전략을 먼저 저장해주세요.");
+      saveStrategyModal.show();
+      return;
+    } else {
+      const saveResultModal = new bootstrap.Modal(
+        document.getElementById("saveResultModal")
+      );
+      saveResultModal.show();
+      return;
+    }
+  });
+
+  function applyStrategyToForm(strategy) {
+    document.querySelector("input[name='strategy_id']").value =
+      strategy.id || null;
+    document.querySelector("input[name='strategy_name']").value =
+      strategy.name || "";
+    document.querySelector("select[name='rebalance_frequency']").value =
+      strategy.rebalance_frequency || "monthly";
+    document.querySelector("select[name='include_cash']").checked =
+      strategy.include_cash || false;
+    document.querySelector("input[name='cash_ticker']").value =
+      strategy.cash_ticker || "CASH";
+    document.querySelector("input[name='cash_weight']").value = (
+      strategy.cash_weight * 100
+    ).toFixed(2);
+
+    fillAllocations(strategy.allocations || []);
+  }
+
+  function fillAllocations(allocations) {
+    const allocationsDiv = document.getElementById("allocations");
+    allocationsDiv.innerHTML = ""; // Clear existing allocations
+
+    allocations.forEach((allocation, index) => {
+      const newAllocation = document.createElement("div");
+      newAllocation.className = "allocation row mb-2";
+
+      newAllocation.innerHTML = `
+          <div class="col-md-5">
+              <input name="allocations[${index}][ticker]" placeholder="티커" class="form-control mb-1" value="${
+        allocation.ticker
+      }" required>
+          </div>
+          <div class="col-md-5">
+              <input name="allocations[${index}][weight]" placeholder="비율 (%)" class="form-control mb-1" value="${(
+        allocation.weight * 100
+      ).toFixed(2)}" required>
+          </div>
+          <div class="col-md-2">
+              <button type="button" class="btn btn-outline-danger remove-allocation">삭제</button>
+          </div>
+      `;
+
+      allocationsDiv.appendChild(newAllocation);
+    });
+  }
+});
 
 document
   .getElementById("add-allocation")
@@ -52,7 +159,8 @@ document
     const formData = new FormData(this);
     const data = {
       allocations: [],
-      strategy_name: formData.get("strategy_name") || null,
+      name: formData.get("strategy_name") || null,
+      // strategy_name: formData.get("strategy_name") || null,
       start_date: formData.get("start_date") || null,
       end_date: formData.get("end_date") || null,
       rebalance_freq: formData.get("rebalance_frequency"),
@@ -80,7 +188,10 @@ document
     // Loading spinner and results box
     const spinner = document.getElementById("loading");
     const resultsBox = document.getElementById("results-box");
-    const saveResults = document.getElementById("save-results");
+    const openSaveModal = document.getElementById("open-save-modal");
+    const openSaveResultModal = document.getElementById(
+      "open-result-save-modal"
+    );
 
     spinner.classList.remove("collapse");
     resultsBox.textContent = "백테스트 결과를 불러오는 중입니다...";
@@ -100,9 +211,12 @@ document
       });
 
       const result = await res.json();
-      console.log(result);
+      latestBacktestResult = result; // Store the latest result globally
       updateResultsBox(result);
-      saveResults.classList.remove("collapse"); // 저장 버튼 활성화
+      console.log(latestBacktestResult);
+
+      openSaveResultModal.classList.remove("collapse"); // 결과 저장 모달 버튼 활성화
+      openSaveModal.classList.remove("collapse"); // 저장 모달 버튼 활성화
     } catch (error) {
       resultsBox.textContent =
         "백테스트 결과를 불러오는 중 오류가 발생했습니다.";
@@ -199,77 +313,3 @@ function renderReturnsChart(priceData) {
     },
   });
 }
-
-// TODO: 백테스트 결과 저장 기능 추가
-document
-  .getElementById("save-results")
-  .addEventListener("click", async function () {});
-
-// 전략 저장 버튼
-// document
-//   .getElementById("save-strategy")
-//   .addEventListener("click", async function () {
-//     const name = document.getElementById("strategy-name").value;
-//     const description = document.getElementById("strategy-description").value;
-//     const type = document.getElementById("strategy-type").value;
-
-//     if (!name) {
-//       alert("전략 이름을 입력해주세요.");
-//       return;
-//     }
-
-//     const formData = new FormData(document.getElementById("backtest-form"));
-//     const parameters = {};
-
-//     parameters.allocations = [];
-//     const allocationKeys = [...formData.keys()].filter((k) =>
-//       k.startsWith("allocations[")
-//     );
-//     const tickers = allocationKeys.filter((k) => k.endsWith("[ticker]"));
-//     const weights = allocationKeys.filter((k) => k.endsWith("[weight]"));
-
-//     for (let i = 0; i < tickers.length; i++) {
-//       const ticker = formData.get(tickers[i]);
-//       const weight = parseFloat(formData.get(weights[i]) || 0) / 100;
-//       if (ticker) {
-//         parameters.allocations.push({ ticker, weight });
-//       }
-//     }
-
-//     parameters.start_date = formData.get("start_date") || null;
-//     parameters.end_date = formData.get("end_date") || null;
-//     parameters.rebalance_freq = formData.get("rebalance_frequency");
-//     parameters.slippage = parseFloat(formData.get("slippage") || 0);
-//     parameters.include_cash = formData.get("include_cash") || false;
-//     parameters.cash_ticker = formData.get("cash_ticker") || "CASH";
-//     parameters.cash_weight = parseFloat(formData.get("cash_weight") / 100 || 0);
-
-//     const payload = {
-//       name: name,
-//       description: description,
-//       type: type,
-//       parameters: parameters,
-//     };
-
-//     try {
-//       const res = await fetch("/api/strategy/", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           "X-CSRFToken": getCSRFToken() || "",
-//         },
-//         body: JSON.stringify(data),
-//       });
-
-//       if (res.ok) {
-//         alert("전략이 저장되었습니다.");
-//       } else {
-//         const errorData = await res.json();
-//         console.error("저장 오류:", errorData);
-//         alert("전략 저장에 실패했습니다: " + errorData.detail);
-//       }
-//     } catch (err) {
-//       console.error(err);
-//       alert("저장 중 오류 발생");
-//     }
-//   });
