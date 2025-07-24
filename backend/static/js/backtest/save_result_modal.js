@@ -1,5 +1,6 @@
 import { getCSRFToken } from "../utils.js";
-import { latestBacktestResult } from "./backtest_page.js";
+import { parseDate } from "../utils.js";
+import { getLatestBacktestResult } from "./backtest_page.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const resultForm = document.getElementById("resultForm");
@@ -31,16 +32,50 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
+    const latestBacktestStats = getLatestBacktestResult().stats;
+    if (!latestBacktestStats) {
+      alert("백테스트 결과가 없습니다. 백테스트를 먼저 실행해주세요.");
+      return;
+    }
+
+    console.log(latestBacktestStats);
+
     const payload = {
       name: name,
       description: description,
-      start_date: latestBacktestResult.start_date,
-      end_date: latestBacktestResult.end_date,
-      max_drawdown: parseFloat(latestBacktestResult.max_drawdown || 0),
-      volatility: parseFloat(latestBacktestResult.volatility || 0),
-      sharpe_ratio: parseFloat(latestBacktestResult.sharpe_ratio || 0),
-      sortino_ratio: parseFloat(latestBacktestResult.sortino_ratio || 0),
-      strategy_id: latestBacktestResult.strategy_id || null,
+      start_date: parseDate(latestBacktestStats.start), // format: YYYY-MM-DD
+      end_date: parseDate(latestBacktestStats.end), // format: YYYY-MM-DD
+      cagr: parseFloat(latestBacktestStats.cagr || 0),
+      total_return: parseFloat(latestBacktestStats.total_return || 0),
+      max_drawdown: parseFloat(latestBacktestStats.max_drawdown || 0),
+      volatility: parseFloat(latestBacktestStats.yearly_vol || 0),
+      sharpe_ratio: parseFloat(latestBacktestStats.yearly_sharpe || 0),
+      sortino_ratio: parseFloat(latestBacktestStats.yearly_sortino || 0),
+      strategy: strategyId,
     };
+
+    // save result via API
+    try {
+      const response = await fetch("/api/backtest/backtest-stats/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken() || "",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save result");
+      }
+
+      const resultData = await response.json();
+      console.log("Result saved successfully:", resultData);
+      alert("결과가 성공적으로 저장되었습니다.");
+      resultModal.hide();
+    } catch (error) {
+      console.error("Error saving result:", error);
+      alert("결과 저장에 실패했습니다. 다시 시도해주세요.");
+    }
   });
 });
