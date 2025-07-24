@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
     strategyNameInput.value =
       document.querySelector("input[name='strategy_name']").value || "";
 
-    if (!strategyIdInput && !strategyIdInput.value) {
+    if (!strategyIdInput || !strategyIdInput.value) {
       alert("전략을 먼저 저장해주세요.");
       saveStrategyModal.show();
       return;
@@ -67,8 +67,8 @@ document.addEventListener("DOMContentLoaded", function () {
       strategy.name || "";
     document.querySelector("select[name='rebalance_frequency']").value =
       strategy.rebalance_frequency || "monthly";
-    document.querySelector("select[name='include_cash']").value =
-      strategy.include_cash ? "true" : "false";
+    document.querySelector("select[name='include_cash']").checked =
+      strategy.include_cash || false;
     document.querySelector("input[name='cash_ticker']").value =
       strategy.cash_ticker || "CASH";
     document.querySelector("input[name='cash_weight']").value = (
