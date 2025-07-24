@@ -8,19 +8,20 @@
     <div class="container border p-3 mb-3">
       <form id="backtest-form">
         <div class="mb-3">
-          <label for="strategy_name" class="form-label">전략 이름</label>
-          <input type="text" class="form-control" id="strategy_name" name="strategy_name" placeholder="예: 나의 첫 전략">
+          <label for="strategy_id" class="form-label">전략 ID</label>
+          <input type="text" id="strategy_id" name="strategy_id" readonly="readonly" class="form-control" placeholder="없음">
         </div>
-
-        {% comment %}
         <div class="mb-3">
-          <label for="strategy-description" class="form-label">전략 설명</label>
-          <input type="text" class="form-control" id="strategy-description" name="strategy_description" placeholder="예: 나의 첫 전략">
-        </div> {% endcomment %}
+          <button type="button" class="btn btn-secondary" id="open-load-modal" data-bs-toggle="modal" data-bs-target="#loadStrategyModal">전략 불러오기</button>
+        </div>
+        <div class="mb-3">
+          <label for="strategy_name" class="form-label">전략 이름</label>
+          <input type="text" class="form-control" id="strategy_name" name="strategy_name" placeholder="전략 이름">
+        </div>
 
         <div class="mb-3">
           <label for="strategy-type" class="form-label">전략 종류</label>
-          <select class="form-select" id="strategy-type" name="strategy">
+          <select class="form-select" id="strategy_type" name="strategy_type">
             <option value="STATIC">Static</option>
             <option value="DYNAMIC">Dynamic</option>
             <option value="COMPLEX">Complex</option>
@@ -47,15 +48,6 @@
         </fieldset>
 
         <div class="mb-3">
-          <label for="start_date" class="form-label">시작 날짜</label>
-          <input type="date" class="form-control" id="start_date" name="start_date" required="required" value="2000-01-01">
-        </div>
-        <div class="mb-3">
-          <label for="end_date" class="form-label">종료 날짜</label>
-          <input type="date" class="form-control" id="end_date" name="end_date" required="required" value="2024-12-31">
-        </div>
-
-        <div class="mb-3">
           <label for="rebalance_frequency" class="form-label">리밸런싱 주기</label>
           <select class="form-select" id="rebalance_frequency" name="rebalance_frequency">
             <option value="daily">매일</option>
@@ -64,6 +56,15 @@
             <option value="quarterly">매분기</option>
             <option value="yearly">매년</option>
           </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="start_date" class="form-label">시작 날짜</label>
+          <input type="date" class="form-control" id="start_date" name="start_date" required="required" value="2000-01-01">
+        </div>
+        <div class="mb-3">
+          <label for="end_date" class="form-label">종료 날짜</label>
+          <input type="date" class="form-control" id="end_date" name="end_date" required="required" value="2024-12-31">
         </div>
 
         <div class="mb-3">
@@ -91,7 +92,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">백테스트 실행</button>
-        {% comment %} <button type="button" id="save-strategy" class="btn btn-secondary">전략 저장</button> {% endcomment %}
+        <button type="button" class="btn btn-secondary" id="open-save-modal" data-bs-toggle="modal" data-bs-target="#saveStrategyModal">전략 저장</button>
       </form>
     </div>
   </div>
@@ -101,7 +102,9 @@
         <h2 class="h4">백테스트 결과</h2>
       </div>
       <div class="col-md-2">
-        <button id="save-results" type="button" class="btn btn-secondary collapse">결과 저장</button>
+        <button type="button" id="open-result-save-modal" class="btn btn-secondary collapse">
+          결과 저장
+        </button>
       </div>
     </div>
     <div id="backtest-results" class="border p-3">
@@ -117,7 +120,14 @@
       <canvas id="returns-chart" width="400" height="200"></canvas>
     </div>
   </div>
+</div>
+{% include 'strategy/save_strategy_modal.html' %}
+{% include 'strategy/load_strategy_modal.html' %}
+{% include 'backtest/save_result_modal.html' %}
 {% endblock content %}
 {% block script %}
-  <script type="module" src="{% static 'js/backtest/backtest_page.js' %}"></script>
+<script type="module" src="{% static 'js/backtest/backtest_page.js' %}"></script>
+<script type="module" src="{% static 'js/strategy/save_strategy_modal.js' %}"></script>
+<script type="module" src="{% static 'js/strategy/load_strategy_modal.js' %}"></script>
+<script type="module" src="{% static 'js/backtest/save_result_modal.js' %}"></script>
 {% endblock script %}

@@ -1,12 +1,13 @@
 from django.contrib import admin
 
-from .models import BacktestResult
+from .models import BacktestStat
+
 
 # Register your models here.
-@admin.register(BacktestResult)
-class BacktestResultAdmin(admin.ModelAdmin):
+@admin.register(BacktestStat)
+class BacktestStatAdmin(admin.ModelAdmin):
     """
-    Admin view for BacktestResult model.
+    Admin view for BacktestStat model.
     """
 
     list_display = (
