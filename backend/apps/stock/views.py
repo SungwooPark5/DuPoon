@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
+from django.db.models import OuterRef, Subquery
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -18,7 +20,22 @@ class StockListView(ListView):
     context_object_name = "stocks"
 
     def get_queryset(self):
-        return Stock.objects.all().order_by("name")
+        # Annotate each stock with the latest price date
+        latest_date = (
+            Price.objects.filter(stock=OuterRef("pk"))
+            .order_by("-date")
+            .values("date")[:1]
+        )
+        return Stock.objects.annotate(latest_date=Subquery(latest_date))
+
+
+class StockDetailView(DetailView):
+    model = Stock
+    template_name = "stock/stock_detail.html"
+    context_object_name = "stock"
+
+    def get_queryset(self):
+        return Stock.objects.all()
 
 
 class PriceListView(ListView):
