@@ -56,12 +56,13 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       stockId = await create_stock(payload);
     }
-    // window.location.reload(); // Reload the page to reflect changes
+    window.location.reload(); // Reload the page to reflect changes
   });
 
   // Function to update an existing stock
   async function update_stock(id, payload) {
     try {
+      console.log(getCSRFToken());
       const response = await fetch(`/api/stock/stocks/${id}/`, {
         method: "PUT",
         headers: {
