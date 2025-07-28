@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
+from django.urls import reverse_lazy
 from django.db.models import OuterRef, Subquery
 
 from rest_framework.views import APIView
@@ -11,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import Stock, Price
 from . import tasks
+from .serializers import StockSerializer
 
 
 # Create your views here.
@@ -27,15 +29,6 @@ class StockListView(ListView):
             .values("date")[:1]
         )
         return Stock.objects.annotate(latest_date=Subquery(latest_date))
-
-
-class StockDetailView(DetailView):
-    model = Stock
-    template_name = "stock/stock_detail.html"
-    context_object_name = "stock"
-
-    def get_queryset(self):
-        return Stock.objects.all()
 
 
 class PriceListView(ListView):
@@ -72,3 +65,13 @@ class PriceFetchAPIView(APIView):
                 {"message": f"Error starting price fetch: {e}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+
+class StockViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for Stock model.
+    Provides list, retrieve, create, update, and delete operations.
+    """
+
+    queryset = Stock.objects.all()
+    serializer_class = StockSerializer

@@ -1,28 +1,37 @@
 {% extends "base.html" %}
+{% load static %}
+{% block title %}두푼 - 주식 목록{% endblock title %}
 {% block content %}
-  <h1>All Stocks</h1>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Stock Ticker</th>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Market</th>
-        <th>Listed Date</th>
-        <th>Latest Price Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for stock in stocks %}
+  <div class="container mt-4">
+    <h1>All Stocks</h1>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#stockFormModal">주식 추가</button>
+    <table class="table">
+      <thead>
         <tr>
-          <td>{{ stock.ticker }}</td>
-          <td>{{ stock.name }}</td>
-          <td>{{ stock.type }}</td>
-          <td>{{ stock.market }}</td>
-          <td>{{ stock.listed_date }}</td>
-          <td>{{ stock.latest_date }}</td>
+          <th>Stock Ticker</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Market</th>
+          <th>Listed Date</th>
+          <th>Latest Price Date</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for stock in stocks %}
+          <tr>
+            <td>{{ stock.ticker }}</td>
+            <td>{{ stock.name }}</td>
+            <td>{{ stock.type }}</td>
+            <td>{{ stock.market }}</td>
+            <td>{{ stock.listed_date }}</td>
+            <td>{{ stock.latest_date | default:"-" }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% include 'stock/stock_form_modal.html'%}
+  </div>
 {% endblock content %}
+{% block script %}
+  <script type="module" src="{% static 'js/stock/stock_form_modal.js' %}"></script>
+{% endblock script %}

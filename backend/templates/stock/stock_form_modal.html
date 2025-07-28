@@ -1,0 +1,43 @@
+<!-- Stock Form Modal -->
+<div class="modal fade" id="stockFormModal" tabindex="-1" aria-labelledby="stockFormModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="stockFormModalLabel">종목 정보</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" id="stockForm" action="">
+          <div class="mb-3">
+            <label for="stockName" class="form-label">이름</label>
+            <input type="text" class="form-control" id="stockName" name="stock_name" required="required">
+          </div>
+          <div class="mb-3">
+            <label for="stockTicker" class="form-label">코드</label>
+            <input type="text" class="form-control" id="stockTicker" name="stock_ticker" required="required">
+          </div>
+          <div class="mb-3">
+            <label for="stockMarket" class="form-label">시장</label>
+            <select class="form-select" id="stockMarket" name="stock_market" required="required">
+              <option value="kospi">KOSPI</option>
+              <option value="nasdaq">NASDAQ</option>
+              <option value="nyse">NYSE</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="stockType" class="form-label">종류</label>
+            <select class="form-select" id="stockType" name="stock_type" required="required">
+              <option value="stock">주식</option>
+              <option value="etf">ETF</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="stockListedDate" class="form-label">상장일</label>
+            <input type="date" class="form-control" id="stockListedDate" name="stock_listed_date" required="required">
+          </div>
+          <button type="submit" class="btn btn-primary">저장</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
