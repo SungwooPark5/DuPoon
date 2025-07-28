@@ -18,7 +18,7 @@
       </thead>
       <tbody>
         {% for stock in stocks %}
-          <tr data-id="{{ stock.id }}">
+          <tr data-id="{{ stock.id }}" data-name="{{ stock.name }}" data-ticker="{{ stock.ticker }}" data-type="{{ stock.type }}" data-market="{{ stock.market }}" data-listed_date="{{ stock.listed_date | date:'Y-m-d'}}" data-latest_date="{{ stock.latest_date |default_if_none:'-' |date:'Y-m-d' }}">
             <td>{{ stock.ticker }}</td>
             <td>{{ stock.name }}</td>
             <td>{{ stock.type }}</td>
@@ -26,6 +26,7 @@
             <td>{{ stock.listed_date }}</td>
             <td>{{ stock.latest_date | default:"-" }}</td>
             <td>
+              <button class="btn btn-sm btn-outline-secondary edit-stock">수정</button>
               <button class="btn btn-sm btn-outline-danger delete-stock">삭제</button>
             </td>
           </tr>

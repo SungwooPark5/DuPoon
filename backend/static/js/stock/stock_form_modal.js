@@ -1,10 +1,33 @@
 import { getCSRFToken } from "../utils.js";
+import { parseDate } from "../utils.js";
+import { formatDate } from "../utils.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const stockForm = document.getElementById("stockForm");
   const stockModal = bootstrap.Modal.getOrCreateInstance(
     document.getElementById("stockFormModal")
   );
+
+  let currentStockId = null;
+
+  // Clicking edit button in stock list
+  document.querySelectorAll(".edit-stock").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const row = event.target.closest("tr");
+      currentStockId = row.dataset.id;
+
+      document.getElementById("stockName").value = row.dataset.name;
+      document.getElementById("stockTicker").value = row.dataset.ticker;
+      document.getElementById("stockMarket").value = row.dataset.market;
+      document.getElementById("stockType").value = row.dataset.type;
+      document.getElementById("stockListedDate").value = parseDate(
+        row.dataset.listed_date
+      );
+
+      console.log(row.dataset.listed_date);
+      stockModal.show();
+    });
+  });
 
   stockForm.addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -47,22 +70,19 @@ document.addEventListener("DOMContentLoaded", function () {
       listed_date: stockListedDate,
     };
 
-    let stockId = null;
-
-    console.log(stockId);
     // save strategy via API
-    if (stockId) {
-      update_stock(stockId, payload);
+    if (currentStockId) {
+      await update_stock(currentStockId, payload);
     } else {
-      stockId = await create_stock(payload);
+      await create_stock(payload);
     }
+
     window.location.reload(); // Reload the page to reflect changes
   });
 
   // Function to update an existing stock
   async function update_stock(id, payload) {
     try {
-      console.log(getCSRFToken());
       const response = await fetch(`/api/stock/stocks/${id}/`, {
         method: "PUT",
         headers: {
