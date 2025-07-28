@@ -18,13 +18,16 @@
       </thead>
       <tbody>
         {% for stock in stocks %}
-          <tr>
+          <tr data-id="{{ stock.id }}">
             <td>{{ stock.ticker }}</td>
             <td>{{ stock.name }}</td>
             <td>{{ stock.type }}</td>
             <td>{{ stock.market }}</td>
             <td>{{ stock.listed_date }}</td>
             <td>{{ stock.latest_date | default:"-" }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-danger delete-stock">삭제</button>
+            </td>
           </tr>
         {% endfor %}
       </tbody>
@@ -34,4 +37,5 @@
 {% endblock content %}
 {% block script %}
   <script type="module" src="{% static 'js/stock/stock_form_modal.js' %}"></script>
+  <script type="module" src="{% static 'js/stock/stock_list.js' %}"></script>
 {% endblock script %}
