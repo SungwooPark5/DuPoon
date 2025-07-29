@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
       listed_date: stockListedDate,
     };
 
-    // save strategy via API
+    // save stock via API
     if (currentStockId) {
       await update_stock(currentStockId, payload);
     } else {
