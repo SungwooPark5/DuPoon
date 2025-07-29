@@ -20,7 +20,7 @@ class StockListView(ListView):
     model = Stock
     template_name = "stock/stock_list.html"
     context_object_name = "stocks"
-    paginate_by = 10
+    paginate_by = 2
 
     def get_queryset(self):
         # Annotate each stock with the latest price date

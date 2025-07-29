@@ -1,6 +1,5 @@
 import { getCSRFToken } from "../utils.js";
 import { parseDate } from "../utils.js";
-import { formatDate } from "../utils.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const stockForm = document.getElementById("stockForm");
@@ -24,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
         row.dataset.listed_date
       );
 
-      console.log(row.dataset.listed_date);
       stockModal.show();
     });
   });
