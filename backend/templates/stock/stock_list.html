@@ -1,26 +1,53 @@
 {% extends "base.html" %}
+{% load static %}
+{% block title %}두푼 - 주식 목록{% endblock title %}
 {% block content %}
-  <h1>All Stocks</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Stock Ticker</th>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Market</th>
-        <th>Listed Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for stock in stocks %}
+  <div class="container mt-4">
+    <h1>All Stocks</h1>
+    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#stockFormModal">주식 추가</button>
+    <table class="table">
+      <thead>
         <tr>
-          <td>{{ stock.ticker }}</td>
-          <td>{{ stock.name }}</td>
-          <td>{{ stock.type }}</td>
-          <td>{{ stock.market }}</td>
-          <td>{{ stock.listed_date }}</td>
+          <th>Stock Ticker</th>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Market</th>
+          <th>Listed Date</th>
+          <th>Latest Price Date</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for stock in stocks %}
+          <tr data-id="{{ stock.id }}" data-name="{{ stock.name }}" data-ticker="{{ stock.ticker }}" data-type="{{ stock.type }}" data-market="{{ stock.market }}" data-listed_date="{{ stock.listed_date | date:'Y-m-d'}}" data-latest_date="{{ stock.latest_date |default_if_none:'-' |date:'Y-m-d' }}">
+            <td>{{ stock.ticker }}</td>
+            <td>{{ stock.name }}</td>
+            <td>{{ stock.type }}</td>
+            <td>{{ stock.market }}</td>
+            <td>{{ stock.listed_date }}</td>
+            <td>{{ stock.latest_date | default:"-" }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-secondary edit-stock">수정</button>
+              <button class="btn btn-sm btn-outline-danger delete-stock">삭제</button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if is_paginated %}
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          {% for page_num in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_num == page_obj.number %}active{% endif %}">
+              <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+    {% include 'stock/stock_form_modal.html'%}
+  </div>
 {% endblock content %}
+{% block script %}
+  <script type="module" src="{% static 'js/stock/stock_form_modal.js' %}"></script>
+  <script type="module" src="{% static 'js/stock/stock_list.js' %}"></script>
+{% endblock script %}
