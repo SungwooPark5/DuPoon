@@ -1,5 +1,4 @@
 import pytest
-import factory
 from datetime import date
 
 from apps.stock.models import Stock
