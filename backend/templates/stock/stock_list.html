@@ -33,6 +33,17 @@
         {% endfor %}
       </tbody>
     </table>
+    {% if is_paginated %}
+      <nav aria-labe="Page navigation">
+        <ul class="pagination">
+          {% for page_num in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_num == page_obj.numer %}active{% endif %}">
+              <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
     {% include 'stock/stock_form_modal.html'%}
   </div>
 {% endblock content %}
