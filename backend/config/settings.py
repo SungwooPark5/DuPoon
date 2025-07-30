@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     "apps.core",
     "apps.stock",
     "apps.backtest",
-    "apps.strategy"
+    "apps.strategy",
 ]
 
 MIDDLEWARE = [
@@ -184,3 +184,5 @@ import socket
 
 hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
 INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
+
+SWAGGER_USE_COMPAT_RENDERERS = False
