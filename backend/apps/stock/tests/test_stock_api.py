@@ -23,7 +23,7 @@ class TestStockAPI:
 
     # fixture나 factory는 기존에 필요한 데이터가 있어야 할 때 사용함
     # 따라서 stock 생성 요청 테스트는 fixture를 사용하지 않음
-    def test_create_stock(self, client):
+    def test_create_stock(self, api_client):
         url = reverse("stock-list")
         data = {
             "name": "Test Stock",
@@ -32,24 +32,24 @@ class TestStockAPI:
             "market": "kospi",
             "listed_date": "2023-01-01",
         }
-        response = client.post(url, data, format="json")
+        response = api_client.post(url, data, format="json")
 
         assert response.status_code == 201
         assert Stock.objects.count() == 1
         assert Stock.objects.filter(ticker="TST").exists()
 
-    def test_get_stock_list(self, client, stock):
+    def test_get_stock_list(self, api_client, stock):
         url = reverse("stock-list")
-        response = client.get(url)
+        response = api_client.get(url)
         data = response.json()
 
         assert response.status_code == 200
         assert data["results"][0]["ticker"] == stock.ticker
         assert len(data["results"]) == 1
 
-    def test_get_stock_detail(self, client, stock):
+    def test_get_stock_detail(self, api_client, stock):
         url = reverse("stock-detail", kwargs={"pk": stock.pk})
-        response = client.get(url)
+        response = api_client.get(url)
         data = response.json()
 
         assert response.status_code == 200
