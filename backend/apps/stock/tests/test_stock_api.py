@@ -1,6 +1,8 @@
 import pytest
+from unittest.mock import patch
 from django.urls import reverse
 from rest_framework.test import APIClient
+
 
 from apps.stock.models import Stock
 from apps.stock.factories import StockFactory
@@ -79,3 +81,39 @@ class TestStockAPI:
 
         assert response.status_code == 204
         assert not Stock.objects.filter(pk=stock.pk).exists()
+
+
+@pytest.mark.django_db
+class TestPriceFetchAPI:
+
+    @pytest.fixture
+    def client(self, django_user_model):
+        user = django_user_model.objects.create_user(
+            username="testuser", password="testpass"
+        )
+        client = APIClient()
+        client.force_authenticate(user=user)
+        return client
+
+    @patch("apps.stock.tasks.fetch_and_save_prices.delay")
+    def test_fetch_success(self, mock_delay, client):
+        url = reverse("price_fetch")
+        response = client.post(url)
+
+        assert response.status_code == 200
+        assert response.json()["message"] == "started fetching prices"
+
+        mock_delay.assert_called_once()
+        called_args = mock_delay.call_args[0]
+        assert isinstance(called_args[0], str)  # user ID should be a string
+
+    @patch(
+        "apps.stock.tasks.fetch_and_save_prices.delay",
+        side_effect=Exception("Fetch failed"),
+    )
+    def test_fetch_failure(self, mock_delay, client):
+        url = reverse("price_fetch")
+        response = client.post(url)
+
+        assert response.status_code == 500
+        assert response.json()["message"] == "Error starting price fetch: Fetch failed"
