@@ -4,7 +4,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 
-from apps.stock.models import Stock
+from apps.stock.models import Stock, Price
 from apps.stock.factories import StockFactory
 
 
@@ -95,17 +95,23 @@ class TestPriceFetchAPI:
         client.force_authenticate(user=user)
         return client
 
-    @patch("apps.stock.tasks.fetch_and_save_prices.delay")
-    def test_fetch_success(self, mock_delay, client):
+    # Integration test for fetch API
+    @patch("apps.stock.utils.yf.download")
+    def test_fetch_success(self, mock_download, fake_price_data_df, client):
+        mock_download.return_value = fake_price_data_df
+        StockFactory(ticker="TST")
+
         url = reverse("price_fetch")
         response = client.post(url)
 
         assert response.status_code == 200
         assert response.json()["message"] == "started fetching prices"
 
-        mock_delay.assert_called_once()
-        called_args = mock_delay.call_args[0]
-        assert isinstance(called_args[0], str)  # user ID should be a string
+        # fake_price_data_df is in "apps/stock/tests/conftest.py"
+        prices = Price.objects.filter(stock__ticker="TST")
+        assert prices.count() == 2
+        assert prices.first().stock.ticker == "TST"
+        assert prices.first().adj_close_price in [37, 38]
 
     @patch(
         "apps.stock.tasks.fetch_and_save_prices.delay",
