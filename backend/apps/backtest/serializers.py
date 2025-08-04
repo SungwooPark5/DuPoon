@@ -130,8 +130,6 @@ class BacktestResultSerializer(serializers.Serializer):
     lookback_returns = serializers.DictField()
     price = serializers.ListField(child=PriceDataSerializer())
 
-    pass
-
 
 class BacktestStatSerializer(serializers.ModelSerializer):
     """
