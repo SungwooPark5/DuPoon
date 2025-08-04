@@ -25,7 +25,7 @@ class TestStockListView:
         assert response.status_code == 200
         assert stock.ticker in response.content.decode()
         assert stock.name in response.content.decode()
-        # Latest price date should be displayed(ect: "2023년 1월 1일")
+        # Latest price date should be displayed(e.g.: "2023년 1월 1일")
         price_date = price.date
         assert (
             f"{price_date.year}년 {price_date.month}월 {price_date.day}일"
