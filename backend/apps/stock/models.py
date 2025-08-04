@@ -15,7 +15,7 @@ class StockManager(models.Manager):
         """
         Get distinct stock tickers.
         """
-        return self.values_list("ticker", flat=True).distinct()
+        return self.values_list("ticker", flat=True).distinct().order_by("ticker")
 
 
 class Stock(models.Model):
