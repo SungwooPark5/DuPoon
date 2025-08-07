@@ -9,4 +9,13 @@ class StrategyFactory(factory.django.DjangoModelFactory):
 
     name = factory.Faker("name")
     description = factory.Faker("text")
-    type = factory.Iterator(Strategy.STRATEGY_TYPES)
+    type = factory.Iterator(["STATIC", "DYNAMIC", "COMPLEX"])
+    rebalance_frequency = factory.Iterator(
+        [
+            "daily",
+            "weekly",
+            "monthly",
+            "quarterly",
+            "yearly",
+        ]
+    )

@@ -1,3 +1,4 @@
+import math
 from rest_framework import serializers
 
 from apps.stock.models import Stock
@@ -129,6 +130,23 @@ class BacktestResultSerializer(serializers.Serializer):
     stats = serializers.DictField()
     lookback_returns = serializers.DictField()
     price = serializers.ListField(child=PriceDataSerializer())
+
+    def clean_invalid_floats(self, obj):
+        if isinstance(obj, dict):
+            return {k: self.clean_invalid_floats(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [self.clean_invalid_floats(i) for i in obj]
+        elif isinstance(obj, float):
+            return None if math.isnan(obj) or math.isinf(obj) else obj
+        else:
+            return obj
+
+    def to_representation(self, instance):
+        """
+        Clean the data before serialization.
+        """
+        cleaned_data = self.clean_invalid_floats(instance)
+        return super().to_representation(cleaned_data)
 
 
 class BacktestStatSerializer(serializers.ModelSerializer):
