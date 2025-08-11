@@ -49,6 +49,15 @@ class TestStrategyViewSet:
 
     def test_get_strategy_detail(self, api_client, strategy):
         url = reverse("strategy-detail", kwargs={"pk": strategy.pk})
+        response = api_client.get(url)
+        data = response.json()
+
+        assert response.status_code == 200
+        assert data["name"] == strategy.name
+        assert data["type"] == strategy.type
+
+    def test_update_strategy(self, api_client, strategy):
+        url = reverse("strategy-detail", kwargs={"pk": strategy.pk})
         data = {
             "name": "Updated Strategy",
             "description": "Updated",
@@ -62,8 +71,9 @@ class TestStrategyViewSet:
         assert strategy.description == "Updated"
         assert strategy.type == "DYNAMIC"
 
-    def test_update_strategy(self, api_client, strategy):
-        pass
-
     def test_delete_strategy(self, api_client, strategy):
-        pass
+        url = reverse("strategy-detail", kwargs={"pk": strategy.pk})
+        response = api_client.delete(url)
+
+        assert response.status_code == 204
+        assert not Strategy.objects.filter(pk=strategy.pk).exists()
