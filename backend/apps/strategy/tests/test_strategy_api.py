@@ -36,3 +36,34 @@ class TestStrategyViewSet:
         assert response.status_code == 201
         assert Strategy.objects.count() == 1
         assert Strategy.objects.filter(name="Test Strategy").exists()
+
+    def test_get_strategy_list(self, api_client, strategy):
+        url = reverse("strategy-list")
+        response = api_client.get(url)
+        data = response.json()
+        results = data["results"]
+
+        assert response.status_code == 200
+        assert results[0]["name"] == strategy.name
+        assert data["count"] == 1
+
+    def test_get_strategy_detail(self, api_client, strategy):
+        url = reverse("strategy-detail", kwargs={"pk": strategy.pk})
+        data = {
+            "name": "Updated Strategy",
+            "description": "Updated",
+            "type": "DYNAMIC",
+        }
+        response = api_client.put(url, data, format="json")
+
+        assert response.status_code == 200
+        strategy.refresh_from_db()
+        assert strategy.name == "Updated Strategy"
+        assert strategy.description == "Updated"
+        assert strategy.type == "DYNAMIC"
+
+    def test_update_strategy(self, api_client, strategy):
+        pass
+
+    def test_delete_strategy(self, api_client, strategy):
+        pass
