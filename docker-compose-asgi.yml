@@ -1,0 +1,43 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "python manage.py collectstatic --noinput &&
+      uvicorn config.asgi:application --host 0.0.0.0 --port 8000 --reload"
+    volumes:
+      - ./backend:/code
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    image: postgres:17
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  celery:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: "celery -A config worker --loglevel=info"
+    depends_on:
+      - redis
+    volumes:
+      - ./backend:/code
+    env_file:
+      - .env
+
+volumes:
+  postgres_data:
