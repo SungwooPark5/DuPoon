@@ -4,12 +4,12 @@
 {% block content %}
   <div class="container mt-4">
     <h1>All Stocks</h1>
-    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#stockFormModal">주식 추가</button>
+    <button class="btn btn-success col" data-bs-toggle="modal" data-bs-target="#stockFormModal">주식 추가</button>
+    <button class="btn btn-secondary col" id="updateStockPriceButton">가격 업데이트</button>
     <table class="table">
       <thead>
         <tr>
-          <th>Stock Ticker</th>
-          <th>Name</th>
+          <th>Ticker</th>
           <th>Type</th>
           <th>Market</th>
           <th>Listed Date</th>
@@ -50,4 +50,5 @@
 {% block script %}
   <script type="module" src="{% static 'js/stock/stock_form_modal.js' %}"></script>
   <script type="module" src="{% static 'js/stock/stock_list.js' %}"></script>
+  <script type="module" src="{% static 'js/stock/fetch_stock_price.js' %}"></script>
 {% endblock script %}
