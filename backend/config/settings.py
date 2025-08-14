@@ -157,7 +157,7 @@ REST_FRAMEWORK = {
 }
 
 # ASGI configuration
-ASGI_APPLICATION = "backend.asgi.application"
+ASGI_APPLICATION = "config.asgi.application"
 
 # Redis channels layer configuration
 CHANNEL_LAYERS = {

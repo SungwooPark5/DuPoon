@@ -4,7 +4,7 @@ from . import consumers
 
 websocket_urlpatterns = [
     re_path(
-        r"ws/price-update/(?P<user_id>\w+)/$",
+        r"ws/price-update/(?P<user_id>\w+)/?$",
         consumers.PriceUpdateConsumer.as_asgi(),
     )
 ]
