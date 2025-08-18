@@ -2,6 +2,7 @@ import pytest
 import json
 
 from channels.testing import WebsocketCommunicator
+from channels.layers import get_channel_layer
 
 from apps.stock.consumers import PriceUpdateConsumer
 from config.asgi import application
@@ -39,3 +40,27 @@ class TestPriceUpdateConsumer:
         assert connected
 
         await communicator.disconnect()
+
+    async def test_user_receive_price_update_complete(self, user):
+        communicator = WebsocketCommunicator(
+            application=application,
+            path=f"/ws/price-update/{user.id}",
+        )
+
+        connected, subprotocol = await communicator.connect()
+
+        assert connected
+
+        channel_layer = get_channel_layer()
+        await channel_layer.group_send(
+            f"price_updates_{user.id}",
+            {
+                "type": "send_price_update",
+                "message": "Prices fetched and saved successfully.",
+            },
+        )
+
+        response = await communicator.receive_from()
+        assert json.loads(response) == {
+            "message": "Prices fetched and saved successfully."
+        }
