@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, DetailView
 
 from rest_framework import generics, viewsets
 
@@ -19,6 +19,12 @@ class StrategyListView(ListView):
 
     def get_queryset(self):
         return Strategy.objects.all().order_by("name")
+
+
+class StrategyDetailView(DetailView):
+    model = Strategy
+    template_name = "strategy/strategy_detail.html"
+    context_object_name = "strategy"
 
 
 # APIViews
