@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load custom_tags %}
+{% load static %}
+{% block content %}
+  <div class="container mt-4">
+    <div class="mb-5">
+      <h1 class="h2">{{ strategy.name }}</h1>
+      <p>{{strategy.description}}</p>
+    </div>
+
+    <ul class="list-group">
+      <li class="list-group-item">
+        생성일:
+        {{strategy.created_at}}</li>
+      <li class="list-group-item">
+        전략 종류:
+        {{strategy.type}}</li>
+      <li class="list-group-item">
+        리밸런싱 주기:
+        {{strategy.rebalance_frequency}}</li>
+      <li class="list-group-item">
+        현금 포함 유무:
+        {{strategy.include_cash}}
+      </li class="list-group-item">
+      {% if strategy.include_cash %}
+        <li class="list-group-item">
+          현금 티커:
+          {{strategy.cash_ticker}}
+        </li>
+      {% endif %}
+      {% if strategy.type == "STATIC" %}
+        <li class="list-group-item">
+          자산 배분:
+          {% for allocation in strategy.allocations %}
+            <div>
+              티커:
+              {{ allocation.ticker }}
+              | 비율:
+              {{ allocation.weight }}%
+            </div>
+          {% endfor %}
+        </li>
+      {% endif %}
+    </ul>
+    <div class="mt-5">
+      <h2 class="h4">백테스트 결과</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>이름</th>
+            <th>시작일</th>
+            <th>종료일</th>
+            <th>총 수익률 (%)</th>
+            <th>CAGR (%)</th>
+            <th>최대 낙폭 (%)</th>
+            <th>변동성 (%)</th>
+            <th>샤프 비율</th>
+            <th>소르티노 비율</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for result in backtest_results %}
+            <tr data-id="{{ result.id }}">
+              <td>{{ result.name }}</td>
+              <td>{{ result.start_date }}</td>
+              <td>{{ result.end_date }}</td>
+              <td>{{ result.total_return|percentage:2 }}</td>
+              <td>{{ result.cagr|percentage:2 }}</td>
+              <td>{{ result.max_drawdown|percentage:2 }}</td>
+              <td>{{ result.volatility|percentage:2 }}</td>
+              <td>{{ result.sharpe_ratio|floatformat:2 }}</td>
+              <td>{{ result.sortino_ratio|floatformat:2 }}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-danger delete-result">삭제</button>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="9">백테스트 결과가 없습니다.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock content %}
+{% block script %}
+  <script type="module" src="{% static 'js/strategy/strategy_detail.js' %}"></script>
+{% endblock script %}
