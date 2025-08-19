@@ -1,24 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
-  <h1>All Strategies</h1>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Type</th>
-        <th>Created At</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for strategy in strategies %}
+  <div class="container mt-4">
+    <h1 class="h2">전략 목록</h1>
+    <table class="table table-hover">
+      <thead>
         <tr>
-          <td>{{ strategy.name }}</td>
-          <td>{{ strategy.description }}</td>
-          <td>{{ strategy.type }}</td>
-          <td>{{ strategy.created_at }}</td>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Type</th>
+          <th>Created At</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for strategy in strategies %}
+          <tr>
+            <td>
+              <a href="{% url 'strategy:strategy_detail' strategy.id %}">
+                {{ strategy.name }}
+              </a>
+            </td>
+            <td>{{ strategy.description }}</td>
+            <td>{{ strategy.type }}</td>
+            <td>{{ strategy.created_at }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock content %}
