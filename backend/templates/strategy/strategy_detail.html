@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load custom_tags %}
+{% load static %}
 {% block content %}
-  {% load custom_tags %}
   <div class="container mt-4">
     <div class="mb-5">
       <h1 class="h2">{{ strategy.name }}</h1>
@@ -41,7 +42,7 @@
         </li>
       {% endif %}
     </ul>
-    <div class="mt-4">
+    <div class="mt-5">
       <h2 class="h4">백테스트 결과</h2>
       <table class="table">
         <thead>
@@ -59,7 +60,7 @@
         </thead>
         <tbody>
           {% for result in backtest_results %}
-            <tr>
+            <tr data-id="{{ result.id }}">
               <td>{{ result.name }}</td>
               <td>{{ result.start_date }}</td>
               <td>{{ result.end_date }}</td>
@@ -69,6 +70,9 @@
               <td>{{ result.volatility|percentage:2 }}</td>
               <td>{{ result.sharpe_ratio|floatformat:2 }}</td>
               <td>{{ result.sortino_ratio|floatformat:2 }}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-danger delete-result">삭제</button>
+              </td>
             </tr>
             {% empty %}
             <tr>
@@ -80,3 +84,6 @@
     </div>
   </div>
 {% endblock content %}
+{% block script %}
+  <script type="module" src="{% static 'js/strategy/strategy_detail.js' %}"></script>
+{% endblock script %}
