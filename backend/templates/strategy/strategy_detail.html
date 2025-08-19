@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+  {% load custom_tags %}
   <div class="container mt-4">
     <div class="mb-5">
       <h1 class="h2">{{ strategy.name }}</h1>
@@ -38,7 +39,44 @@
             </div>
           {% endfor %}
         </li>
-      </ul>
-    {% endif %}
+      {% endif %}
+    </ul>
+    <div class="mt-4">
+      <h2 class="h4">백테스트 결과</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>이름</th>
+            <th>시작일</th>
+            <th>종료일</th>
+            <th>총 수익률 (%)</th>
+            <th>CAGR (%)</th>
+            <th>최대 낙폭 (%)</th>
+            <th>변동성 (%)</th>
+            <th>샤프 비율</th>
+            <th>소르티노 비율</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for result in backtest_results %}
+            <tr>
+              <td>{{ result.name }}</td>
+              <td>{{ result.start_date }}</td>
+              <td>{{ result.end_date }}</td>
+              <td>{{ result.total_return|percentage:2 }}</td>
+              <td>{{ result.cagr|percentage:2 }}</td>
+              <td>{{ result.max_drawdown|percentage:2 }}</td>
+              <td>{{ result.volatility|percentage:2 }}</td>
+              <td>{{ result.sharpe_ratio|floatformat:2 }}</td>
+              <td>{{ result.sortino_ratio|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="4">백테스트 결과가 없습니다.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 {% endblock content %}
