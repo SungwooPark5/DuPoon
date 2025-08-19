@@ -1,31 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="container mt-4">
-    <h1>{{ strategy.name }}</h1>
-    <p>{{strategy.description}}</p>
+    <div class="mb-5">
+      <h1 class="h2">{{ strategy.name }}</h1>
+      <p>{{strategy.description}}</p>
+    </div>
 
-    <h2>전략 기본 정보</h2>
     <ul class="list-group">
       <li class="list-group-item">
-        <strong>생성일:</strong>
+        생성일:
         {{strategy.created_at}}</li>
       <li class="list-group-item">
-        <strong>전략 종류:</strong>
+        전략 종류:
         {{strategy.type}}</li>
       <li class="list-group-item">
-        <strong>리밸런싱 주기:</strong>
+        리밸런싱 주기:
         {{strategy.rebalance_frequency}}</li>
       <li class="list-group-item">
-        <strong>현금 포함 유무:
-        </strong>
+        현금 포함 유무:
         {{strategy.include_cash}}
       </li class="list-group-item">
       {% if strategy.include_cash %}
         <li class="list-group-item">
-          <strong>현금 티커:</strong>
+          현금 티커:
           {{strategy.cash_ticker}}
         </li>
       {% endif %}
-    </ul>
+      {% if strategy.type == "STATIC" %}
+        <li class="list-group-item">
+          자산 배분:
+          {% for allocation in strategy.allocations %}
+            <div>
+              티커:
+              {{ allocation.ticker }}
+              | 비율:
+              {{ allocation.weight }}%
+            </div>
+          {% endfor %}
+        </li>
+      </ul>
+    {% endif %}
   </div>
 {% endblock content %}
