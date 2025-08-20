@@ -3,20 +3,20 @@
 {% block title %}두푼 - 백테스트{% endblock title %}
 {% block content %}
   <div class="container">
-    <h1 class="h2">백테스트 설정</h1>
+    <h1 class="h2 my-3">백테스트 설정</h1>
     <p>지정한 전략으로 백테스트 실행</p>
     <div class="container border p-3 mb-3">
       <form id="backtest-form">
-        <div class="mb-3">
-          <label for="strategy_id" class="form-label">전략 ID</label>
-          <input type="text" id="strategy_id" name="strategy_id" readonly="readonly" class="form-control" placeholder="없음">
-        </div>
-        <div class="mb-3">
-          <button type="button" class="btn btn-secondary" id="open-load-modal" data-bs-toggle="modal" data-bs-target="#loadStrategyModal">전략 불러오기</button>
-        </div>
-        <div class="mb-3">
-          <label for="strategy_name" class="form-label">전략 이름</label>
-          <input type="text" class="form-control" id="strategy_name" name="strategy_name" placeholder="전략 이름">
+        <div class="row">
+          <div class="mb-3 col-md-6">
+            <label for="strategy_id" class="form-label">전략 ID</label>
+            <input type="text" id="strategy_id" name="strategy_id" readonly="readonly" class="form-control mb-3" placeholder="없음">
+            <button type="button" class="btn btn-secondary" id="open-load-modal" data-bs-toggle="modal" data-bs-target="#loadStrategyModal">전략 불러오기</button>
+          </div>
+          <div class="mb-3 col-md-6">
+            <label for="strategy_name" class="form-label">전략 이름</label>
+            <input type="text" class="form-control" id="strategy_name" name="strategy_name" placeholder="전략 이름">
+          </div>
         </div>
 
         <div class="mb-3">
@@ -47,29 +47,33 @@
           <button type="button" class="btn btn-secondary" id="add-allocation">자산 추가</button>
         </fieldset>
 
-        <div class="mb-3">
-          <label for="rebalance_frequency" class="form-label">리밸런싱 주기</label>
-          <select class="form-select" id="rebalance_frequency" name="rebalance_frequency">
-            <option value="daily">매일</option>
-            <option value="weekly">매주</option>
-            <option value="monthly">매월</option>
-            <option value="quarterly">매분기</option>
-            <option value="yearly">매년</option>
-          </select>
+        <div class="row">
+          <div class="mb-3 col-md-6">
+            <label for="rebalance_frequency" class="form-label">리밸런싱 주기</label>
+            <select class="form-select" id="rebalance_frequency" name="rebalance_frequency">
+              <option value="daily">매일</option>
+              <option value="weekly">매주</option>
+              <option value="monthly">매월</option>
+              <option value="quarterly">매분기</option>
+              <option value="yearly">매년</option>
+            </select>
+          </div>
+
+          <div class="mb-3 col-md-6">
+            <label for="slippage" class="form-label">슬리피지 (%)</label>
+            <input type="number" class="form-control" id="slippage" name="slippage" step="0.01" min="0" value="0">
+          </div>
         </div>
 
-        <div class="mb-3">
-          <label for="start_date" class="form-label">시작 날짜</label>
-          <input type="date" class="form-control" id="start_date" name="start_date" required="required" value="2000-01-01">
-        </div>
-        <div class="mb-3">
-          <label for="end_date" class="form-label">종료 날짜</label>
-          <input type="date" class="form-control" id="end_date" name="end_date" required="required" value="2024-12-31">
-        </div>
-
-        <div class="mb-3">
-          <label for="slippage" class="form-label">슬리피지 (%)</label>
-          <input type="number" class="form-control" id="slippage" name="slippage" step="0.01" min="0" value="0">
+        <div class="row">
+          <div class="mb-3 col-md-6">
+            <label for="start_date" class="form-label">시작 날짜</label>
+            <input type="date" class="form-control" id="start_date" name="start_date" required="required" value="2000-01-01">
+          </div>
+          <div class="mb-3 col-md-6">
+            <label for="end_date" class="form-label">종료 날짜</label>
+            <input type="date" class="form-control" id="end_date" name="end_date" required="required" value="2024-12-31">
+          </div>
         </div>
 
         <div class="mb-3">
@@ -80,12 +84,12 @@
           </select>
         </div>
 
-        <div id="cash-options" class="collapse">
-          <div class="mb-3">
+        <div id="cash-options" class="row collapse">
+          <div class="mb-3 col-md-6">
             <label for="cash_ticker" class="form-label">현금 티커</label>
             <input type="text" class="form-control" id="cash_ticker" name="cash_ticker" placeholder="예: KODEX 단기채권 ETF">
           </div>
-          <div class="mb-3">
+          <div class="mb-3 col-md-6">
             <label for="cash_weight" class="form-label">현금 비율 (%)</label>
             <input type="number" class="form-control" id="cash_weight" name="cash_weight" step="0.01" min="0" value="0">
           </div>
@@ -107,7 +111,7 @@
         </button>
       </div>
     </div>
-    <div id="backtest-results" class="border p-3">
+    <div id="backtest-results" class="border p-3 mb-5">
       <!-- Results will be displayed here -->
       <div id="loading" class="text-center collapse">
         <div class="spinner-border" role="status">

@@ -12,6 +12,7 @@ from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
 
 from common.utils import serialize_backtest_stats
+from apps.stock.models import Stock
 
 from .services.strategies import get_static_allocation_strategy
 from .services.dtos import BacktestConfig
@@ -30,6 +31,13 @@ class BacktestView(TemplateView):
     """
 
     template_name = "backtest/backtest.html"
+
+    stocks = Stock.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["stocks"] = self.stocks
+        return context
 
 
 class BacktestAPIView(APIView):

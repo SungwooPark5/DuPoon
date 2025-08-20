@@ -24,17 +24,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto-mb-2 mb-lg-0">
-            <li class="nav-item">
+            {% comment %} <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+            </li> {% endcomment %}
+            {% comment %} <li class="nav-item">
+              <a class="nav-link" href="{% url 'stock:price_list' %}">주가</a>
+            </li> {% endcomment %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'backtest:backtest' %}">백테스트</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'stock:stock_list' %}">주식</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'stock:price_list' %}">주가</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'backtest:backtest' %}">백테스트</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'strategy:strategy_list' %}">전략</a>
