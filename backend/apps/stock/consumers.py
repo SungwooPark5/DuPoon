@@ -18,7 +18,7 @@ class PriceUpdateConsumer(AsyncWebsocketConsumer):
 
     async def send_price_update(self, event):
         """
-        Send a price update to the WebSocket.
+        Send price update to the WebSocket.
         """
         await self.send(
             text_data=json.dumps(

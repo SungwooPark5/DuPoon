@@ -7,7 +7,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 
 app = Celery("backend")
 
-# settings.py에서 celery관련 설정 불러옴옴
+# settings.py에서 celery관련 설정 불러옴
 app.config_from_object("django.conf:settings", namespace="CELERY")
 
 app.autodiscover_tasks()
