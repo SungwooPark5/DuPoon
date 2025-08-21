@@ -1,6 +1,4 @@
-from django.shortcuts import render
 from django.views.generic import ListView
-from django.urls import reverse_lazy
 from django.db.models import OuterRef, Subquery
 
 from rest_framework.views import APIView
