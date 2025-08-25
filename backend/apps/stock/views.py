@@ -46,6 +46,8 @@ class PriceFetchAPIView(APIView):
     API view to start fetching prices for all stocks.
     """
 
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         """
         Start fetching prices for all stocks.
