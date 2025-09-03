@@ -48,6 +48,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # User Authentication
     path("accounts/", include("django.contrib.auth.urls")),
+    path("accounts/", include("apps.accounts.urls")),
     # API authentication
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     # Include app URLs

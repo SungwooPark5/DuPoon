@@ -49,9 +49,10 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                   <li>
-                    <form method="post" action="#">
+                    <form method="post" action="{% url 'logout' %}">
                       {% csrf_token %}
-                      <button type="submit" class="dropdown-item" formaction="#">로그아웃</button>
+                      <button type="submit" class="dropdown-item" formaction="{% url 'logout' %}">로그아웃</button>
+                    </form>
                   </li>
                 </ul>
               </li>
@@ -61,7 +62,7 @@
           <div class="mr-auto">
             <form class="form d-flex">
               <a href="{% url 'login' %}" class="btn btn-outline-success" type="submit">로그인</a>
-              <a href="#" class="btn btn-outline-primary ms-2" type="submit">회원가입</a>
+              <a href="{% url 'signup' %}" class="btn btn-outline-primary ms-2" type="submit">회원가입</a>
             </form>
           </div>
           {% endif %}

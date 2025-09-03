@@ -127,6 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # User Authentication
 LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
 
 
 # Internationalization
