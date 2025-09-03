@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     "channels",
     "debug_toolbar",
     "drf_yasg",
+    "crispy_forms",
+    "crispy_bootstrap5",
     # My Apps
     "apps.core",
     "apps.stock",
