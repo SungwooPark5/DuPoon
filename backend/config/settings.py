@@ -51,11 +51,14 @@ INSTALLED_APPS = [
     "channels",
     "debug_toolbar",
     "drf_yasg",
+    "crispy_forms",
+    "crispy_bootstrap5",
     # My Apps
     "apps.core",
     "apps.stock",
     "apps.backtest",
     "apps.strategy",
+    "apps.accounts",
 ]
 
 MIDDLEWARE = [
@@ -124,6 +127,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# User Authentication
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -186,3 +193,7 @@ hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
 INTERNAL_IPS = [ip[:-1] + "1" for ip in ips]
 
 SWAGGER_USE_COMPAT_RENDERERS = False
+
+# Crispy Forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
