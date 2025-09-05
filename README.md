@@ -16,18 +16,18 @@
 
 ### Frontend
 
-![Chart.js]()
+- Chart.js
 
 ### Backend
 
-![Django]()
-![Redis]()
-![Celery]()
+- Django
+- Redis
+- Celery
 
 ### Database
 
-![PostgreSQL]()
-![Docker]()
+- PostgreSQL
+- Docker
 
 <br>
 
